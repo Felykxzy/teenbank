@@ -3,29 +3,35 @@
   <desc id="d">Premium profile avatar for Auralis app</desc>
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#a7f3d0"/>
-      <stop offset="32%" stop-color="#6ee7b7"/>
-      <stop offset="72%" stop-color="#34d399"/>
-      <stop offset="100%" stop-color="#5b5cf8"/>
+      <stop offset="0%" stop-color="#d9f99d"/>
+      <stop offset="22%" stop-color="#86efac"/>
+      <stop offset="52%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
     </linearGradient>
     <radialGradient id="glow" cx="50%" cy="35%" r="60%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.82"/>
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
       <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
     </radialGradient>
+    <linearGradient id="glassLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.15)"/>
+      <stop offset="50%" stop-color="rgba(255,255,255,0.9)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.15)"/>
+    </linearGradient>
   </defs>
 
   <rect width="320" height="320" rx="160" fill="url(#bg)"/>
-  <circle cx="160" cy="160" r="128" fill="url(#glow)" opacity="0.34"/>
-  <circle cx="160" cy="160" r="116" fill="rgba(7,18,30,0.10)" stroke="rgba(255,255,255,0.32)" stroke-width="2"/>
+  <circle cx="160" cy="160" r="126" fill="url(#glow)" opacity="0.34"/>
+  <circle cx="160" cy="160" r="118" fill="rgba(7,18,30,0.08)" stroke="rgba(255,255,255,0.32)" stroke-width="2.4"/>
 
-  <circle cx="160" cy="118" r="52" fill="#f8fafc" opacity="0.96"/>
-  <path d="M82 258c12-35 44-58 78-58s66 23 78 58" fill="#f8fafc" opacity="0.96"/>
+  <path d="M120 278c14-36 42-58 82-58 38 0 68 22 82 58" fill="#f8fafc" opacity="0.96"/>
+  <circle cx="160" cy="120" r="52" fill="#f8fafc" opacity="0.98"/>
 
-  <circle cx="141" cy="116" r="4" fill="#0f172a"/>
-  <circle cx="180" cy="116" r="4" fill="#0f172a"/>
-  <path d="M142 138c8 10 28 10 36 0" stroke="#0f172a" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <circle cx="141" cy="118" r="4.5" fill="#0f172a"/>
+  <circle cx="180" cy="118" r="4.5" fill="#0f172a"/>
+  <path d="M142 139c9 10 27 10 36 0" stroke="#0f172a" stroke-width="5" stroke-linecap="round" fill="none"/>
 
-  <path d="M230 82l8 20 20 8-20 8-8 20-8-20-20-8 20-8 8-20z" fill="#e0f2fe" opacity="0.9"/>
-  <circle cx="258" cy="62" r="7" fill="#e2e8f0" opacity="0.8"/>
-  <circle cx="92" cy="76" r="5" fill="#ecfeff" opacity="0.8"/>
+  <path d="M234 80l10 24 24 10-24 10-10 24-10-24-24-10 24-10 10-24z" fill="#e0f2fe" opacity="0.9"/>
+  <circle cx="256" cy="58" r="7" fill="#ecfeff" opacity="0.8"/>
+  <circle cx="92" cy="78" r="5" fill="#ecfeff" opacity="0.72"/>
+  <path d="M70 82h20" stroke="url(#glassLine)" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
 </svg>
