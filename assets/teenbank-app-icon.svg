@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">TeenBank app icon</title>
+  <desc id="desc">Gradient app icon for TeenBank with card and sparkle.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="35%" stop-color="#2dd4bf"/>
+      <stop offset="100%" stop-color="#4338ca"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.65)"/>
+      <stop offset="100%" stop-color="rgba(255,255,255,0.18)"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="64" fill="url(#bg)"/>
+  <rect x="34" y="60" width="188" height="120" rx="26" fill="rgba(15,23,42,0.3)" stroke="rgba(255,255,255,0.34)"/>
+  <rect x="52" y="86" width="58" height="38" rx="10" fill="rgba(255,255,255,0.18)"/>
+  <path d="M136 88h58c12.7 0 22 9.3 22 22v8H136v-30zm-34 48h120v12c0 12-9 22-22 22H120c-12 0-22-10-22-22v-12z" fill="rgba(255,255,255,0.88)" opacity="0.9"/>
+  <circle cx="198" cy="74" r="18" fill="rgba(255,255,255,0.25)"/>
+  <path d="M198 58v32M182 74h32" stroke="#d1fae5" stroke-width="6" stroke-linecap="round"/>
+  <path d="M108 170c8.8 10.2 20.7 15.7 37.2 15.7 17.2 0 30.1-7.1 39.2-21.8" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="10" stroke-linecap="round"/>
+</svg>

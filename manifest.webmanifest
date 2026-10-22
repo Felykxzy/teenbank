@@ -1,0 +1,18 @@
+{
+  "name": "TeenBank",
+  "short_name": "TeenBank",
+  "description": "TeenBank iOS-style liquid glass banking app",
+  "start_url": "./TeenBank_Ultra-Realistic_iOS_Web_App.html",
+  "display": "standalone",
+  "background_color": "#020817",
+  "theme_color": "#020817",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./assets/teenbank-app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,380 +1,414 @@
 <!DOCTYPE html>
-<html lang="uk" class="h-full select-none">
+<html lang="uk" class="h-full">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#020817" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="TeenBank" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
     <title>TeenBank — iOS Liquid Glass</title>
-    
-    <!-- PWA & Mobile Web App Meta Tags -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="TeenBank">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#030712">
-
-    <!-- App Icon (SVG Data URI) -->
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='url(%23g)'/><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%236366f1'/><stop offset='50%25' stop-color='%23a855f7'/><stop offset='100%25' stop-color='%2310b981'/></linearGradient></defs><path d='M30 30 L70 30 M50 30 L50 75' stroke='white' stroke-width='10' stroke-linecap='round'/></svg>">
-
-    <!-- Tailwind CSS -->
+    <link rel="icon" type="image/svg+xml" href="./assets/teenbank-app-icon.svg" />
+    <link rel="apple-touch-icon" href="./assets/teenbank-app-icon.svg" />
+    <link rel="manifest" href="./manifest.webmanifest" />
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Google Fonts (Plus Jakarta Sans / Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --bg-0: #020817;
+            --bg-1: #0f172a;
+            --glass: rgba(255, 255, 255, 0.08);
+            --glass-strong: rgba(255, 255, 255, 0.14);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --emerald: #34d399;
+            --emerald-2: #6ee7b7;
+            --teal: #2dd4bf;
+            --indigo: #8b5cf6;
+            --violet: #a78bfa;
+            --amber: #fbbf24;
+            --shadow: rgba(15, 23, 42, 0.8);
+        }
+
         * {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             touch-action: pan-y;
         }
 
-        body {
-            background-color: #030712;
-            color: #f3f4f6;
-            overflow: hidden;
+        html, body {
+            margin: 0;
+            min-height: 100%;
+            background:
+                radial-gradient(circle at top left, rgba(52, 211, 153, 0.18), transparent 24%),
+                radial-gradient(circle at bottom right, rgba(139, 92, 246, 0.18), transparent 28%),
+                linear-gradient(180deg, #020617 0%, #030712 100%);
+            color: var(--text);
             overscroll-behavior: none;
-            height: 100dvh;
-            width: 100vw;
+            user-select: none;
         }
 
-        /* Ambient Glass Background Glows */
+        body {
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        button, input {
+            font: inherit;
+        }
+
+        .glass-shell {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.78), rgba(2, 6, 23, 0.86));
+            backdrop-filter: blur(30px) saturate(1.4);
+            -webkit-backdrop-filter: blur(30px) saturate(1.4);
+        }
+
+        .liquid-glass {
+            position: relative;
+            background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+            border: 1px solid rgba(255,255,255,0.16);
+            box-shadow:
+                inset 0 1px 1px rgba(255,255,255,0.2),
+                inset 0 -1px 1px rgba(255,255,255,0.04),
+                0 18px 30px rgba(2, 6, 23, 0.45),
+                0 2px 12px rgba(15, 23, 42, 0.3);
+            backdrop-filter: blur(26px) saturate(175%);
+            -webkit-backdrop-filter: blur(26px) saturate(175%);
+            overflow: hidden;
+            will-change: transform, box-shadow;
+        }
+
+        .liquid-glass::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.18) 35%, transparent 58%);
+            transform: translateX(-120%) rotate(18deg);
+            animation: glassSweep 9s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .liquid-glass::after {
+            content: "";
+            position: absolute;
+            inset: 1px;
+            border-radius: inherit;
+            background: linear-gradient(180deg, rgba(255,255,255,0.08), transparent 30%, rgba(255,255,255,0.02) 100%);
+            pointer-events: none;
+        }
+
+        .glass-card {
+            position: relative;
+            background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: 0 25px 60px rgba(15,23,42,0.55), inset 0 1px 1px rgba(255,255,255,0.4);
+            backdrop-filter: blur(36px) saturate(220%);
+            -webkit-backdrop-filter: blur(36px) saturate(220%);
+        }
+
         .ambient-glow {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.5;
+            filter: blur(88px);
+            opacity: 0.42;
             pointer-events: none;
-            will-change: transform;
-            animation: pulseGlow 8s ease-in-out infinite alternate;
+            animation: pulseGlow 9s ease-in-out infinite alternate;
         }
 
-        @keyframes pulseGlow {
-            0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
-            50% { transform: scale(1.15) translate(20px, -20px); opacity: 0.6; }
-            100% { transform: scale(0.95) translate(-15px, 15px); opacity: 0.4; }
+        .tab-content {
+            transition: opacity 0.38s ease, transform 0.38s cubic-bezier(.16,1,.3,1);
         }
 
-        /* iOS Ultra Liquid Glassmorphism Styling */
-        .liquid-glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(35px) saturate(210%);
-            -webkit-backdrop-filter: blur(35px) saturate(210%);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
-                        inset 0 1px 1px rgba(255, 255, 255, 0.3),
-                        inset 0 -1px 1px rgba(0, 0, 0, 0.2);
-        }
-
-        .liquid-glass-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.03) 100%);
-            backdrop-filter: blur(40px) saturate(220%);
-            -webkit-backdrop-filter: blur(40px) saturate(220%);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5),
-                        inset 0 1px 2px rgba(255, 255, 255, 0.5);
-        }
-
-        /* Shimmer Reflection Overlay */
-        .glass-shimmer {
-            position: relative;
-            overflow: hidden;
-        }
-        .glass-shimmer::before {
-            content: '';
+        .tab-content.hidden-tab {
+            opacity: 0;
+            transform: translateY(10px) scale(0.98);
+            pointer-events: none;
             position: absolute;
-            top: -150%;
-            left: -150%;
-            width: 300%;
-            height: 300%;
-            background: linear-gradient(
-                45deg,
-                transparent 45%,
-                rgba(255, 255, 255, 0.12) 50%,
-                transparent 55%
-            );
-            transform: rotate(30deg);
-            animation: shimmerMove 6s infinite linear;
-            pointer-events: none;
+            inset: 0;
+            width: 100%;
         }
 
-        @keyframes shimmerMove {
-            0% { transform: translateY(-100%) rotate(30deg); }
-            100% { transform: translateY(100%) rotate(30deg); }
+        .nav-pill {
+            transition: all 0.45s cubic-bezier(.34,1.56,.64,1);
         }
 
-        /* 3D Dynamic Tilt Card Container */
+        .faceid-modal {
+            transition: opacity 0.35s ease, transform 0.35s ease;
+        }
+
         .card-3d-wrapper {
-            perspective: 1000px;
-        }
-        .card-3d-inner {
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-            transform-style: preserve-3d;
+            perspective: 1200px;
         }
 
-        /* Hide scrollbars completely for native feel */
+        .card-3d-inner {
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(.23,1,.32,1), box-shadow 0.4s ease;
+            will-change: transform;
+        }
+
+        .card-3d-inner:hover {
+            box-shadow: 0 30px 70px rgba(20, 30, 60, 0.5), inset 0 1px 1px rgba(255,255,255,0.35);
+        }
+
+        .floating-app-card {
+            animation: floatCard 6s ease-in-out infinite;
+        }
+
+        .app-badge {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Smooth Tab Animations */
-        .tab-content {
-            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .tab-content.hidden-tab {
-            opacity: 0;
-            transform: scale(0.96) translateY(10px);
-            pointer-events: none;
-            position: absolute;
-            width: 100%;
-            inset: 0;
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0,0); opacity: 0.3; }
+            50% { transform: scale(1.15) translate(18px, -18px); opacity: 0.5; }
+            100% { transform: scale(0.94) translate(-16px, 16px); opacity: 0.32; }
         }
 
-        /* Sliding Pill Effect on Tab Bar */
-        .nav-pill {
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        @keyframes glassSweep {
+            0% { transform: translateX(-120%) rotate(18deg); }
+            18%, 100% { transform: translateX(120%) rotate(18deg); }
         }
 
-        /* iOS Face ID Overlay Blur */
-        .faceid-modal {
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-4px); }
+        }
+
+        @media (hover: hover) and (pointer: fine) {
+            .interactive:hover {
+                transform: translateY(-1px);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+            }
         }
     </style>
 </head>
-<body class="flex flex-col h-full w-full relative overflow-hidden bg-gray-950 text-gray-100">
+<body class="flex flex-col h-full w-full relative overflow-hidden bg-slate-950 text-slate-50">
+    <div class="ambient-glow w-96 h-96 bg-emerald-500/30 -top-20 -left-20"></div>
+    <div class="ambient-glow w-80 h-80 bg-indigo-500/30 top-1/3 -right-16" style="animation-delay:-2.5s;"></div>
+    <div class="ambient-glow w-[22rem] h-[22rem] bg-violet-500/25 -bottom-20 left-10" style="animation-delay:-4.5s;"></div>
 
-    <!-- Dynamic Background Lights (Glows) -->
-    <div class="ambient-glow w-96 h-96 bg-indigo-600/40 -top-20 -left-20"></div>
-    <div class="ambient-glow w-80 h-80 bg-emerald-500/30 top-1/3 -right-20" style="animation-delay: -3s;"></div>
-    <div class="ambient-glow w-96 h-96 bg-purple-600/30 -bottom-20 left-10" style="animation-delay: -5s;"></div>
-
-    <!-- MAIN WRAPPER (Fits Mobile Screen with Safe Area) -->
     <div class="flex-1 flex flex-col h-full w-full max-w-md mx-auto relative z-10 pt-[env(safe-area-inset-top,12px)] pb-[env(safe-area-inset-bottom,12px)] px-4 overflow-hidden">
-
-        <!-- TOP BAR / iOS STATUS & PROFILE -->
         <header class="flex items-center justify-between py-3 mb-2 shrink-0">
             <div class="flex items-center space-x-3">
-                <div class="relative">
-                    <img id="user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" 
-                         alt="Avatar" class="w-11 h-11 rounded-full object-cover border-2 border-emerald-400/80 shadow-lg ring-2 ring-emerald-500/20">
-                    <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-400 border-2 border-gray-950 rounded-full"></div>
+                <div class="relative shrink-0">
+                    <img id="user-avatar" src="./assets/teenbank-avatar.svg" alt="TeenBank avatar" class="w-11 h-11 rounded-full object-cover border-2 border-emerald-400/80 shadow-lg ring-2 ring-emerald-400/15">
+                    <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-400 border-2 border-slate-950 rounded-full"></div>
                 </div>
                 <div>
-                    <div class="flex items-center space-x-1">
-                        <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400">Teen VIP</span>
-                        <i data-lucide="sparkles" class="w-3 h-3 text-emerald-400"></i>
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-300">Teen VIP</span>
+                        <i data-lucide="sparkles" class="w-3 h-3 text-emerald-300"></i>
                     </div>
-                    <h1 class="text-base font-bold text-white tracking-tight flex items-center gap-1">
-                        Привіт, Алекс!
-                    </h1>
+                    <h1 class="text-base font-bold text-white tracking-tight">Привіт, Алекс!</h1>
                 </div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="flex items-center space-x-2">
-                <button onclick="triggerFaceID()" class="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-gray-200 active:scale-90 transition">
-                    <i data-lucide="scan-face" class="w-5 h-5 text-emerald-400"></i>
+                <button id="install-button" onclick="installApp()" class="hidden w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-emerald-300 active:scale-90 transition">
+                    <i data-lucide="download" class="w-4 h-4"></i>
                 </button>
-                <button onclick="toggleNotifications()" class="relative w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-gray-200 active:scale-90 transition">
+                <button onclick="triggerFaceID()" class="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-emerald-300 active:scale-90 transition">
+                    <i data-lucide="scan-face" class="w-5 h-5"></i>
+                </button>
+                <button onclick="toggleNotifications()" class="relative w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-slate-200 active:scale-90 transition">
                     <i data-lucide="bell" class="w-5 h-5"></i>
-                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-emerald-400 rounded-full ring-2 ring-gray-950 animate-ping"></span>
-                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-emerald-400 rounded-full ring-2 ring-gray-950"></span>
+                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-emerald-400 rounded-full ring-2 ring-slate-950 animate-ping"></span>
+                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-emerald-400 rounded-full ring-2 ring-slate-950"></span>
                 </button>
             </div>
         </header>
 
-        <!-- CONTENT VIEWS CONTAINER -->
-        <div class="flex-1 relative overflow-y-auto no-scrollbar pb-24">
-            
-            <!-- ================= TAB 1: MAIN HOME VIEW ================= -->
+        <div class="flex-1 relative overflow-y-auto no-scrollbar pb-28">
             <div id="tab-home" class="tab-content space-y-5">
-
-                <!-- 3D GLASS VIRTUAL CARD -->
                 <div class="card-3d-wrapper py-1">
-                    <div id="bank-card" class="card-3d-inner relative w-full h-52 rounded-3xl p-6 flex flex-col justify-between liquid-glass-card glass-shimmer overflow-hidden shadow-2xl cursor-pointer">
-                        
-                        <!-- Card Glow Backdrop -->
-                        <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none"></div>
-                        <div class="absolute -left-10 -top-10 w-44 h-44 bg-indigo-500/20 rounded-full blur-2xl pointer-events-none"></div>
+                    <div id="bank-card" class="card-3d-inner relative w-full h-56 rounded-[2rem] p-5 flex flex-col justify-between glass-card overflow-hidden shadow-[0_30px_80px_rgba(15,23,42,0.7)] cursor-pointer">
+                        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/25 rounded-full blur-3xl"></div>
+                        <div class="absolute -left-12 -top-12 w-40 h-40 bg-violet-500/18 rounded-full blur-3xl"></div>
+                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.2),_transparent_35%),linear-gradient(135deg,_rgba(255,255,255,0.08),_rgba(255,255,255,0)_65%)]"></div>
 
-                        <!-- Top Info -->
                         <div class="flex justify-between items-start z-10">
                             <div>
-                                <p class="text-xs uppercase tracking-widest text-emerald-300/80 font-bold">TeenBank Platinum</p>
-                                <p class="text-2xl font-extrabold text-white mt-0.5 tracking-tight">₴ 14 850<span class="text-emerald-400 text-lg">.50</span></p>
+                                <p class="text-[10px] uppercase tracking-[0.28em] text-emerald-200/90 font-bold">TeenBank Platinum</p>
+                                <p class="text-[2rem] font-extrabold text-white mt-1 tracking-tight leading-none">₴ 14 850<span class="text-emerald-300 text-xl">.50</span></p>
                             </div>
-                            <div class="flex items-center space-x-2">
-                                <i data-lucide="wifi" class="w-5 h-5 text-white/70 rotate-90"></i>
-                                <span class="font-extrabold text-lg italic tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-200">VISA</span>
+                            <div class="flex items-center gap-2">
+                                <i data-lucide="wifi" class="w-4 h-4 text-slate-200 rotate-90"></i>
+                                <span class="font-extrabold text-xl italic tracking-wider bg-gradient-to-r from-emerald-300 via-teal-200 to-white text-transparent bg-clip-text">VISA</span>
                             </div>
                         </div>
 
-                        <!-- Chip & NFC Symbol -->
                         <div class="flex items-center justify-between my-auto z-10">
-                            <div class="w-11 h-8 rounded-lg bg-gradient-to-tr from-amber-300 via-yellow-400 to-amber-200 p-0.5 flex flex-col justify-between shadow-inner">
-                                <div class="w-full h-full border border-black/20 rounded opacity-60"></div>
+                            <div class="w-12 h-9 rounded-xl bg-gradient-to-tr from-amber-300 via-yellow-400 to-amber-200 p-0.5 flex flex-col justify-between shadow-inner">
+                                <div class="w-full h-full border border-slate-900/20 rounded-lg opacity-70"></div>
                             </div>
-                            <button onclick="flipCard(event)" class="text-xs bg-white/10 hover:bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 text-white flex items-center space-x-1 transition active:scale-95">
+                            <button onclick="flipCard(event)" class="text-[10px] bg-white/8 hover:bg-white/12 active:scale-95 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 text-white flex items-center gap-1.5">
                                 <i data-lucide="rotate-cw" class="w-3 h-3"></i>
                                 <span>CVV / Реквізити</span>
                             </button>
                         </div>
 
-                        <!-- Bottom Card Info -->
                         <div class="flex justify-between items-end z-10">
                             <div>
-                                <p class="text-[10px] text-gray-400 uppercase tracking-wider">Власник</p>
-                                <p class="text-sm font-semibold text-gray-100 tracking-wide">ALEXANDER D.</p>
+                                <p class="text-[9px] text-slate-300 uppercase tracking-[0.2em]">Власник</p>
+                                <p class="text-sm font-semibold text-slate-100 tracking-wide">ALEXANDER D.</p>
                             </div>
                             <div class="text-right">
-                                <p class="text-[10px] text-gray-400 uppercase tracking-wider">Термін</p>
-                                <p class="text-sm font-semibold text-gray-100 tracking-wide">08/28</p>
+                                <p class="text-[9px] text-slate-300 uppercase tracking-[0.2em]">Термін</p>
+                                <p class="text-sm font-semibold text-slate-100 tracking-wide">08/28</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- QUICK ACTIONS -->
                 <div class="grid grid-cols-4 gap-3">
-                    <button onclick="quickAction('send')" class="flex flex-col items-center gap-2 group">
-                        <div class="w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-emerald-400 group-active:scale-90 transition shadow-lg">
+                    <button onclick="quickAction('send')" class="group flex flex-col items-center gap-2">
+                        <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-emerald-300 shadow-lg">
                             <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
                         </div>
-                        <span class="text-xs text-gray-300 font-medium">Переказати</span>
+                        <span class="text-[11px] text-slate-300 font-medium">Переказати</span>
                     </button>
-                    <button onclick="quickAction('topup')" class="flex flex-col items-center gap-2 group">
-                        <div class="w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-teal-400 group-active:scale-90 transition shadow-lg">
+                    <button onclick="quickAction('topup')" class="group flex flex-col items-center gap-2">
+                        <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-teal-300 shadow-lg">
                             <i data-lucide="plus" class="w-6 h-6"></i>
                         </div>
-                        <span class="text-xs text-gray-300 font-medium">Поповнити</span>
+                        <span class="text-[11px] text-slate-300 font-medium">Поповнити</span>
                     </button>
-                    <button onclick="quickAction('jar')" class="flex flex-col items-center gap-2 group">
-                        <div class="w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-indigo-400 group-active:scale-90 transition shadow-lg">
+                    <button onclick="quickAction('jar')" class="group flex flex-col items-center gap-2">
+                        <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-indigo-300 shadow-lg">
                             <i data-lucide="piggy-bank" class="w-6 h-6"></i>
                         </div>
-                        <span class="text-xs text-gray-300 font-medium">Скарбничка</span>
+                        <span class="text-[11px] text-slate-300 font-medium">Скарбничка</span>
                     </button>
-                    <button onclick="quickAction('more')" class="flex flex-col items-center gap-2 group">
-                        <div class="w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-purple-400 group-active:scale-90 transition shadow-lg">
+                    <button onclick="quickAction('more')" class="group flex flex-col items-center gap-2">
+                        <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-violet-300 shadow-lg">
                             <i data-lucide="grid" class="w-6 h-6"></i>
                         </div>
-                        <span class="text-xs text-gray-300 font-medium">Більше</span>
+                        <span class="text-[11px] text-slate-300 font-medium">Більше</span>
                     </button>
                 </div>
 
-                <!-- QUICK TRANSFERS TO FRIENDS -->
                 <div class="space-y-3">
                     <div class="flex justify-between items-center px-1">
-                        <h3 class="text-sm font-bold text-gray-200 tracking-wide">Швидкий переказ друзям</h3>
-                        <span class="text-xs text-emerald-400 font-semibold cursor-pointer">Всі (12)</span>
+                        <h3 class="text-sm font-bold text-slate-200 tracking-wide">Швидкий переказ друзям</h3>
+                        <span class="text-[11px] text-emerald-300 font-semibold cursor-pointer">Всі (12)</span>
                     </div>
                     <div class="flex space-x-3 overflow-x-auto no-scrollbar py-1">
                         <div class="flex flex-col items-center space-y-1.5 shrink-0">
-                            <div class="w-12 h-12 rounded-full border-2 border-dashed border-emerald-400/50 flex items-center justify-center text-emerald-400 cursor-pointer active:scale-95 transition">
+                            <div class="w-12 h-12 rounded-full border-2 border-dashed border-emerald-400/50 flex items-center justify-center text-emerald-300 cursor-pointer active:scale-95 transition">
                                 <i data-lucide="user-plus" class="w-5 h-5"></i>
                             </div>
-                            <span class="text-[11px] text-gray-400">Новий</span>
+                            <span class="text-[10px] text-slate-400">Новий</span>
                         </div>
                         <div onclick="sendMoneyTo('Макс')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
-                            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition border border-white/20">
-                            <span class="text-[11px] text-gray-200 font-medium">Макс</span>
+                            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-transparent group-hover:ring-emerald-300/40" alt="Макс">
+                            <span class="text-[10px] text-slate-200 font-medium">Макс</span>
                         </div>
                         <div onclick="sendMoneyTo('Софія')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
-                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition border border-white/20">
-                            <span class="text-[11px] text-gray-200 font-medium">Софія</span>
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-transparent group-hover:ring-emerald-300/40" alt="Софія">
+                            <span class="text-[10px] text-slate-200 font-medium">Софія</span>
                         </div>
                         <div onclick="sendMoneyTo('Денис')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition border border-white/20">
-                            <span class="text-[11px] text-gray-200 font-medium">Денис</span>
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-transparent group-hover:ring-emerald-300/40" alt="Денис">
+                            <span class="text-[10px] text-slate-200 font-medium">Денис</span>
                         </div>
                         <div onclick="sendMoneyTo('Аліна')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
-                            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition border border-white/20">
-                            <span class="text-[11px] text-gray-200 font-medium">Аліна</span>
+                            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-transparent group-hover:ring-emerald-300/40" alt="Аліна">
+                            <span class="text-[10px] text-slate-200 font-medium">Аліна</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- RECENT TRANSACTIONS -->
                 <div class="space-y-3">
                     <div class="flex justify-between items-center px-1">
-                        <h3 class="text-sm font-bold text-gray-200 tracking-wide">Останні операції</h3>
-                        <i data-lucide="search" class="w-4 h-4 text-gray-400 cursor-pointer"></i>
+                        <h3 class="text-sm font-bold text-slate-200 tracking-wide">Останні операції</h3>
+                        <i data-lucide="search" class="w-4 h-4 text-slate-400 cursor-pointer"></i>
                     </div>
 
                     <div class="space-y-2.5">
-                        <!-- Item 1 -->
                         <div class="liquid-glass rounded-2xl p-3.5 flex items-center justify-between active:scale-[0.98] transition">
                             <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center">
+                                <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-300 flex items-center justify-center">
                                     <i data-lucide="gamepad-2" class="w-5 h-5"></i>
                                 </div>
                                 <div>
                                     <p class="text-sm font-bold text-white">Steam Games</p>
-                                    <p class="text-[11px] text-gray-400">Сьогодні, 16:42 • Ігри</p>
+                                    <p class="text-[11px] text-slate-400">Сьогодні, 16:42 • Ігри</p>
                                 </div>
                             </div>
                             <div class="text-right">
                                 <p class="text-sm font-bold text-white">- ₴ 350.00</p>
-                                <p class="text-[10px] text-emerald-400">+₴ 17.50 кешбек</p>
+                                <p class="text-[10px] text-emerald-300">+₴ 17.50 кешбек</p>
                             </div>
                         </div>
 
-                        <!-- Item 2 -->
                         <div class="liquid-glass rounded-2xl p-3.5 flex items-center justify-between active:scale-[0.98] transition">
                             <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
                                     <i data-lucide="arrow-down-left" class="w-5 h-5"></i>
                                 </div>
                                 <div>
                                     <p class="text-sm font-bold text-white">Переказ від Мами</p>
-                                    <p class="text-[11px] text-gray-400">Сьогодні, 12:15 • Кишенькові</p>
+                                    <p class="text-[11px] text-slate-400">Сьогодні, 12:15 • Кишенькові</p>
                                 </div>
                             </div>
                             <div class="text-right">
-                                <p class="text-sm font-bold text-emerald-400">+ ₴ 1 000.00</p>
-                                <p class="text-[10px] text-gray-400">Поповнення</p>
+                                <p class="text-sm font-bold text-emerald-300">+ ₴ 1 000.00</p>
+                                <p class="text-[10px] text-slate-400">Поповнення</p>
                             </div>
                         </div>
 
-                        <!-- Item 3 -->
                         <div class="liquid-glass rounded-2xl p-3.5 flex items-center justify-between active:scale-[0.98] transition">
                             <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center">
                                     <i data-lucide="coffee" class="w-5 h-5"></i>
                                 </div>
                                 <div>
                                     <p class="text-sm font-bold text-white">Aroma Kava</p>
-                                    <p class="text-[11px] text-gray-400">Вчора, 18:20 • Кафе</p>
+                                    <p class="text-[11px] text-slate-400">Вчора, 18:20 • Кафе</p>
                                 </div>
                             </div>
                             <div class="text-right">
                                 <p class="text-sm font-bold text-white">- ₴ 85.00</p>
-                                <p class="text-[10px] text-emerald-400">+₴ 4.25 кешбек</p>
+                                <p class="text-[10px] text-emerald-300">+₴ 4.25 кешбек</p>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- ================= TAB 2: ANALYTICS & STATS ================= -->
             <div id="tab-analytics" class="tab-content hidden-tab space-y-5">
                 <div class="px-1">
                     <h2 class="text-xl font-bold text-white">Аналітика витрат</h2>
-                    <p class="text-xs text-gray-400">Жовтень 2026 • Усього витрачено ₴ 3 420</p>
+                    <p class="text-xs text-slate-400">Жовтень 2026 • Усього витрачено ₴ 3 420</p>
                 </div>
 
-                <!-- Interactive Chart Canvas Box -->
                 <div class="liquid-glass rounded-3xl p-4 space-y-3">
                     <div class="flex justify-between items-center text-xs">
-                        <span class="text-gray-300 font-medium">Динаміка за тиждень</span>
-                        <span class="text-emerald-400 font-bold flex items-center gap-1">
+                        <span class="text-slate-200 font-medium">Динаміка за тиждень</span>
+                        <span class="text-emerald-300 font-bold flex items-center gap-1">
                             <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> -12% від минулого
                         </span>
                     </div>
 
-                    <!-- Fake Vector Glass Graph -->
                     <div class="h-36 w-full relative flex items-end justify-between px-2 pt-4">
                         <div class="w-8 bg-gradient-to-t from-emerald-500/20 to-emerald-400 rounded-t-lg h-[40%] relative group">
                             <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100 transition">280₴</span>
@@ -395,23 +429,22 @@
                             <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100 transition">630₴</span>
                         </div>
                     </div>
-                    <div class="flex justify-between text-[10px] text-gray-400 px-1 pt-1 border-t border-white/10">
+                    <div class="flex justify-between text-[10px] text-slate-400 px-1 pt-1 border-t border-white/10">
                         <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span>
                     </div>
                 </div>
 
-                <!-- Expense Categories -->
                 <div class="space-y-3">
-                    <h3 class="text-sm font-bold text-gray-200 px-1">Категорії</h3>
-                    
+                    <h3 class="text-sm font-bold text-slate-200 px-1">Категорії</h3>
+
                     <div class="liquid-glass rounded-2xl p-3.5 flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-300 flex items-center justify-center">
                                 <i data-lucide="gamepad-2" class="w-5 h-5"></i>
                             </div>
                             <div>
                                 <p class="text-sm font-bold text-white">Розваги та Ігри</p>
-                                <p class="text-[11px] text-gray-400">45% від усіх витрат</p>
+                                <p class="text-[11px] text-slate-400">45% від усіх витрат</p>
                             </div>
                         </div>
                         <span class="text-sm font-bold text-white">₴ 1 540</span>
@@ -419,12 +452,12 @@
 
                     <div class="liquid-glass rounded-2xl p-3.5 flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center">
                                 <i data-lucide="utensils" class="w-5 h-5"></i>
                             </div>
                             <div>
                                 <p class="text-sm font-bold text-white">Їжа та Кафе</p>
-                                <p class="text-[11px] text-gray-400">30% від усіх витрат</p>
+                                <p class="text-[11px] text-slate-400">30% від усіх витрат</p>
                             </div>
                         </div>
                         <span class="text-sm font-bold text-white">₴ 1 025</span>
@@ -432,153 +465,180 @@
                 </div>
             </div>
 
-            <!-- ================= TAB 3: SAVINGS / JARS ================= -->
             <div id="tab-vault" class="tab-content hidden-tab space-y-5">
                 <div class="flex justify-between items-center px-1">
                     <div>
                         <h2 class="text-xl font-bold text-white">Скарбнички</h2>
-                        <p class="text-xs text-gray-400">Накопичуй на свої мрії з +7% річних</p>
+                        <p class="text-xs text-slate-400">Накопичуй на свої мрії з +7% річних</p>
                     </div>
-                    <button class="w-9 h-9 rounded-full bg-emerald-500 text-gray-950 flex items-center justify-center font-bold shadow-lg active:scale-90 transition">
+                    <button class="w-9 h-9 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center font-bold shadow-lg active:scale-90 transition">
                         <i data-lucide="plus" class="w-5 h-5"></i>
                     </button>
                 </div>
 
-                <!-- Jar 1 -->
                 <div class="liquid-glass rounded-3xl p-5 space-y-4 relative overflow-hidden">
                     <div class="flex justify-between items-start">
                         <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-2xl">
-                                🎧
-                            </div>
+                            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-300 flex items-center justify-center text-2xl">🎧</div>
                             <div>
                                 <h3 class="text-base font-bold text-white">AirPods Max</h3>
-                                <p class="text-xs text-gray-400">Зібрано ₴ 12 000 з 22 000</p>
+                                <p class="text-xs text-slate-400">Зібрано ₴ 12 000 з 22 000</p>
                             </div>
                         </div>
-                        <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">54%</span>
+                        <span class="text-[10px] font-bold text-emerald-300 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">54%</span>
                     </div>
 
-                    <!-- Progress bar -->
-                    <div class="w-full bg-gray-800/80 h-3 rounded-full overflow-hidden p-0.5 border border-white/10">
+                    <div class="w-full bg-slate-800/80 h-3 rounded-full overflow-hidden p-0.5 border border-white/10">
                         <div class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full rounded-full w-[54%] transition-all duration-1000"></div>
                     </div>
 
                     <div class="flex justify-between items-center pt-1">
-                        <span class="text-xs text-gray-400">+₴ 70.00 відсоток цього місяця</span>
-                        <button onclick="topUpJar('AirPods Max')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300">Поповнити +</button>
+                        <span class="text-[11px] text-slate-400">+₴ 70.00 відсоток цього місяця</span>
+                        <button onclick="topUpJar('AirPods Max')" class="text-[11px] font-bold text-emerald-300 hover:text-emerald-200">Поповнити +</button>
                     </div>
                 </div>
 
-                <!-- Jar 2 -->
                 <div class="liquid-glass rounded-3xl p-5 space-y-4 relative overflow-hidden">
                     <div class="flex justify-between items-start">
                         <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-2xl">
-                                🚲
-                            </div>
+                            <div class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-2xl">🚲</div>
                             <div>
                                 <h3 class="text-base font-bold text-white">Новий Байк</h3>
-                                <p class="text-xs text-gray-400">Зібрано ₴ 4 500 з 15 000</p>
+                                <p class="text-xs text-slate-400">Зібрано ₴ 4 500 з 15 000</p>
                             </div>
                         </div>
-                        <span class="text-xs font-bold text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-full border border-teal-500/20">30%</span>
+                        <span class="text-[10px] font-bold text-teal-300 bg-teal-500/10 px-2.5 py-1 rounded-full border border-teal-500/20">30%</span>
                     </div>
 
-                    <div class="w-full bg-gray-800/80 h-3 rounded-full overflow-hidden p-0.5 border border-white/10">
+                    <div class="w-full bg-slate-800/80 h-3 rounded-full overflow-hidden p-0.5 border border-white/10">
                         <div class="bg-gradient-to-r from-teal-500 to-emerald-400 h-full rounded-full w-[30%] transition-all duration-1000"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- ================= TAB 4: SETTINGS / CUSTOMIZATION ================= -->
             <div id="tab-settings" class="tab-content hidden-tab space-y-5">
                 <div class="px-1">
                     <h2 class="text-xl font-bold text-white">Налаштування та Стиль</h2>
-                    <p class="text-xs text-gray-400">Кастомізуй свій TeenBank</p>
+                    <p class="text-xs text-slate-400">Кастомізуй свій TeenBank</p>
                 </div>
 
                 <div class="liquid-glass rounded-3xl p-4 space-y-4">
-                    <h3 class="text-sm font-bold text-gray-200">Дизайн картки</h3>
+                    <h3 class="text-sm font-bold text-slate-200">Дизайн картки</h3>
                     <div class="grid grid-cols-3 gap-3">
-                        <button onclick="setCardSkin('emerald')" class="h-16 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 border-2 border-emerald-400 flex items-center justify-center font-bold text-xs text-white shadow-lg">Неон</button>
-                        <button onclick="setCardSkin('purple')" class="h-16 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-800 border border-white/20 flex items-center justify-center font-bold text-xs text-white shadow-lg">Кибер</button>
-                        <button onclick="setCardSkin('gold')" class="h-16 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 border border-white/20 flex items-center justify-center font-bold text-xs text-black shadow-lg">Золото</button>
+                        <button onclick="setCardSkin('emerald')" class="h-16 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 border-2 border-emerald-300 shadow-lg active:scale-95">
+                            <span class="text-xs font-bold text-white">Emerald</span>
+                        </button>
+                        <button onclick="setCardSkin('purple')" class="h-16 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-800 border border-white/20 active:scale-95">
+                            <span class="text-xs font-bold text-white">Purple</span>
+                        </button>
+                        <button onclick="setCardSkin('gold')" class="h-16 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 border border-white/20 active:scale-95">
+                            <span class="text-xs font-bold text-slate-950">Gold</span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="space-y-2">
+                <div class="space-y-2.5">
                     <div class="liquid-glass rounded-2xl p-4 flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i>
+                            <i data-lucide="shield-check" class="w-5 h-5 text-emerald-300"></i>
                             <span class="text-sm font-medium text-white">Батьківський контроль</span>
                         </div>
-                        <span class="text-xs text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded-lg">Активний</span>
+                        <span class="text-[10px] text-emerald-300 font-bold bg-emerald-500/10 px-2 py-1 rounded-lg">Активний</span>
                     </div>
 
                     <div class="liquid-glass rounded-2xl p-4 flex items-center justify-between">
                         <div class="flex items-center space-x-3">
-                            <i data-lucide="smartphone" class="w-5 h-5 text-indigo-400"></i>
+                            <i data-lucide="smartphone" class="w-5 h-5 text-indigo-300"></i>
                             <span class="text-sm font-medium text-white">Face ID / Touch ID</span>
                         </div>
                         <input type="checkbox" checked class="accent-emerald-400 w-5 h-5">
                     </div>
+
+                    <div class="liquid-glass rounded-2xl p-4">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400/20 to-indigo-500/20 flex items-center justify-center text-emerald-300">
+                                    <i data-lucide="smartphone" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-white">Режим додатку</p>
+                                    <p class="text-[11px] text-slate-400">Встановити на головний екран</p>
+                                </div>
+                            </div>
+                            <button onclick="installApp()" class="px-3 py-2 text-[11px] font-bold rounded-full bg-white/10 border border-white/15 text-white">Встановити</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- ================= FLOATING LIQUID GLASS BOTTOM NAVBAR ================= -->
-        <nav class="absolute bottom-[env(safe-area-inset-bottom,12px)] left-4 right-4 h-16 rounded-full liquid-glass p-1.5 flex items-center justify-between z-50 shadow-2xl border border-white/20">
-            
-            <!-- Sliding Active Pill Highlight -->
-            <div id="nav-pill" class="nav-pill absolute h-13 w-1/4 bg-white/15 backdrop-blur-md rounded-full border border-white/25 shadow-inner top-1.5 left-1.5 pointer-events-none"></div>
+        <nav class="absolute bottom-[env(safe-area-inset-bottom,12px)] left-4 right-4 h-16 rounded-full liquid-glass p-1.5 flex items-center justify-between z-50 shadow-2xl border border-white/15">
+            <div id="nav-pill" class="nav-pill absolute h-[calc(100%-10px)] w-[calc(25%-4px)] bg-white/12 backdrop-blur-md rounded-full border border-white/15 shadow-inner top-1.5 left-1.5 pointer-events-none"></div>
 
-            <button onclick="switchTab('home', 0)" class="relative flex-1 h-full flex flex-col items-center justify-center text-emerald-400 z-10 transition">
+            <button onclick="switchTab('home', 0)" class="relative flex-1 h-full flex flex-col items-center justify-center text-emerald-300 z-10 transition">
                 <i data-lucide="home" class="w-5 h-5"></i>
                 <span class="text-[10px] font-bold mt-0.5">Головна</span>
             </button>
 
-            <button onclick="switchTab('analytics', 1)" class="relative flex-1 h-full flex flex-col items-center justify-center text-gray-400 z-10 transition">
+            <button onclick="switchTab('analytics', 1)" class="relative flex-1 h-full flex flex-col items-center justify-center text-slate-400 z-10 transition">
                 <i data-lucide="pie-chart" class="w-5 h-5"></i>
                 <span class="text-[10px] font-bold mt-0.5">Аналітика</span>
             </button>
 
-            <button onclick="switchTab('vault', 2)" class="relative flex-1 h-full flex flex-col items-center justify-center text-gray-400 z-10 transition">
+            <button onclick="switchTab('vault', 2)" class="relative flex-1 h-full flex flex-col items-center justify-center text-slate-400 z-10 transition">
                 <i data-lucide="piggy-bank" class="w-5 h-5"></i>
                 <span class="text-[10px] font-bold mt-0.5">Скарбничка</span>
             </button>
 
-            <button onclick="switchTab('settings', 3)" class="relative flex-1 h-full flex flex-col items-center justify-center text-gray-400 z-10 transition">
+            <button onclick="switchTab('settings', 3)" class="relative flex-1 h-full flex flex-col items-center justify-center text-slate-400 z-10 transition">
                 <i data-lucide="sliders" class="w-5 h-5"></i>
                 <span class="text-[10px] font-bold mt-0.5">Стиль</span>
             </button>
-
         </nav>
 
-        <!-- FACE ID SCAN MODAL -->
-        <div id="faceid-modal" class="faceid-modal fixed inset-0 bg-black/70 backdrop-blur-xl z-50 flex flex-col items-center justify-center opacity-0 pointer-events-none">
+        <div id="faceid-modal" class="faceid-modal fixed inset-0 bg-slate-950/70 backdrop-blur-xl z-[60] flex flex-col items-center justify-center opacity-0 pointer-events-none">
             <div class="relative flex items-center justify-center mb-6">
                 <div class="w-24 h-24 rounded-3xl border-2 border-emerald-400/40 flex items-center justify-center animate-pulse">
-                    <i data-lucide="scan-face" class="w-14 h-14 text-emerald-400"></i>
+                    <i data-lucide="scan-face" class="w-14 h-14 text-emerald-300"></i>
                 </div>
             </div>
             <p class="text-white font-bold text-lg">Face ID</p>
-            <p class="text-gray-400 text-xs mt-1">Сканування обличчя...</p>
+            <p class="text-slate-300 text-xs mt-1">Сканування обличчя...</p>
         </div>
-
     </div>
 
-    <!-- SCRIPTS FOR INTERACTIVITY -->
     <script>
-        // Initialize Lucide Icons
         lucide.createIcons();
 
-        // Dynamic Tab Switching with Sliding Glass Pill
+        let deferredPrompt = null;
+
+        window.addEventListener('beforeinstallprompt', (event) => {
+          event.preventDefault();
+          deferredPrompt = event;
+          const installBtn = document.getElementById('install-button');
+          if (installBtn) {
+              installBtn.classList.remove('hidden');
+          }
+        });
+
+        function installApp() {
+          if (!deferredPrompt) {
+            alert('Додаток вже встановлений або браузер не підтримує встановлення через PWA.');
+            return;
+          }
+
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then(({ outcome }) => {
+            if (outcome === 'accepted') {
+              console.log('PWA installed');
+            }
+            deferredPrompt = null;
+          });
+        }
+
         function switchTab(tabName, index) {
             const tabs = ['home', 'analytics', 'vault', 'settings'];
-            
-            tabs.forEach(t => {
+            tabs.forEach((t) => {
                 const el = document.getElementById(`tab-${t}`);
                 if (t === tabName) {
                     el.classList.remove('hidden-tab');
@@ -587,47 +647,49 @@
                 }
             });
 
-            // Move Navigation Glass Pill
             const pill = document.getElementById('nav-pill');
-            pill.style.left = `calc(${index * 25}% + 6px)`;
+            const offset = index * 25;
+            pill.style.left = `calc(${offset}% + 6px)`;
 
-            // Highlight Active Button Text & Icon
             const buttons = document.querySelectorAll('nav button');
             buttons.forEach((btn, idx) => {
                 if (idx === index) {
-                    btn.classList.add('text-emerald-400');
-                    btn.classList.remove('text-gray-400');
+                    btn.classList.add('text-emerald-300');
+                    btn.classList.remove('text-slate-400');
                 } else {
-                    btn.classList.remove('text-emerald-400');
-                    btn.classList.add('text-gray-400');
+                    btn.classList.remove('text-emerald-300');
+                    btn.classList.add('text-slate-400');
                 }
             });
         }
 
-        // Card Flip Animation
         let isFlipped = false;
         function flipCard(e) {
             e.stopPropagation();
             const card = document.getElementById('bank-card');
             isFlipped = !isFlipped;
-            card.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
+            card.style.transform = isFlipped ? 'rotateY(180deg) rotateX(10deg)' : 'rotateY(0deg) rotateX(0deg)';
         }
 
-        // Face ID Simulation
         function triggerFaceID() {
             const modal = document.getElementById('faceid-modal');
             modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.classList.add('opacity-100');
             setTimeout(() => {
                 modal.classList.add('opacity-0', 'pointer-events-none');
+                modal.classList.remove('opacity-100');
             }, 1800);
         }
 
-        // Quick Actions & Alerts
         function quickAction(action) {
             if (action === 'send') alert('Введіть номер картки або оберіть друга для переказу.');
             if (action === 'topup') alert('Поповнення картки через Apple Pay або термінал 0%.');
             if (action === 'jar') switchTab('vault', 2);
             if (action === 'more') alert('Більше послуг: Кешбек, Кредитний ліміт, Курси валют.');
+        }
+
+        function toggleNotifications() {
+            alert('Сповіщення: 3 нових повідомлення, 1 підписка активна.');
         }
 
         function sendMoneyTo(name) {
@@ -647,13 +709,23 @@
         function setCardSkin(skin) {
             const card = document.getElementById('bank-card');
             if (skin === 'emerald') {
-                card.className = "card-3d-inner relative w-full h-52 rounded-3xl p-6 flex flex-col justify-between liquid-glass-card glass-shimmer overflow-hidden shadow-2xl cursor-pointer";
+                card.className = 'card-3d-inner relative w-full h-56 rounded-[2rem] p-5 flex flex-col justify-between glass-card overflow-hidden shadow-[0_30px_80px_rgba(15,23,42,0.7)] cursor-pointer';
+                card.style.background = 'linear-gradient(135deg, rgba(16,185,129,0.28), rgba(6,78,59,0.68) 35%, rgba(15,23,42,0.75) 100%)';
             } else if (skin === 'purple') {
-                card.className = "card-3d-inner relative w-full h-52 rounded-3xl p-6 flex flex-col justify-between bg-gradient-to-br from-purple-900/80 to-indigo-900/80 backdrop-blur-2xl border border-purple-400/30 shadow-2xl cursor-pointer";
+                card.className = 'card-3d-inner relative w-full h-56 rounded-[2rem] p-5 flex flex-col justify-between glass-card overflow-hidden shadow-[0_30px_80px_rgba(15,23,42,0.7)] cursor-pointer';
+                card.style.background = 'linear-gradient(135deg, rgba(139,92,246,0.35), rgba(67,56,202,0.7) 32%, rgba(15,23,42,0.82) 100%)';
             } else if (skin === 'gold') {
-                card.className = "card-3d-inner relative w-full h-52 rounded-3xl p-6 flex flex-col justify-between bg-gradient-to-br from-amber-500/80 to-yellow-700/80 backdrop-blur-2xl border border-yellow-300/40 shadow-2xl cursor-pointer text-gray-950";
+                card.className = 'card-3d-inner relative w-full h-56 rounded-[2rem] p-5 flex flex-col justify-between glass-card overflow-hidden shadow-[0_30px_80px_rgba(15,23,42,0.7)] cursor-pointer';
+                card.style.background = 'linear-gradient(135deg, rgba(251,191,36,0.42), rgba(146,64,14,0.78) 42%, rgba(15,23,42,0.8) 100%)';
             }
         }
+
+        function applyInitialState() {
+            switchTab('home', 0);
+            setCardSkin('emerald');
+        }
+
+        applyInitialState();
     </script>
 </body>
 </html>

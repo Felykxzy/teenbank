@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="t d">
+  <title id="t">TeenBank avatar</title>
+  <desc id="d">Stylized avatar for TeenBank user profile</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#a7f3d0"/>
+      <stop offset="55%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" rx="160" fill="url(#bg)"/>
+  <circle cx="160" cy="120" r="56" fill="#f8fafc" opacity="0.92"/>
+  <path d="M76 262c10-36 42-58 84-58s74 22 84 58" fill="#f8fafc" opacity="0.9"/>
+  <circle cx="141" cy="112" r="4" fill="#0f172a"/>
+  <circle cx="181" cy="112" r="4" fill="#0f172a"/>
+  <path d="M143 136c10 11 25 11 35 0" stroke="#0f172a" stroke-width="5" stroke-linecap="round" fill="none"/>
+</svg>
