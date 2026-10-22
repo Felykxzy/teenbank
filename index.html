@@ -16,25 +16,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body>
-    <div id="app-root" class="app-root">
+  <body class="locked">
+    <div class="app-shell">
       <div id="lock-screen" class="lock-screen">
         <div class="lock-window">
-          <div class="status-bar" aria-label="status bar">
+          <header class="status-bar" aria-label="status bar">
             <span id="status-time">20:50</span>
-            <div class="status-icons">
-              <span>◔</span>
-              <span>▣</span>
-              <span class="status-battery">55</span>
+            <div class="status-icons" aria-hidden="true">
+              <span class="signal">◔</span>
+              <span class="wifi">▣</span>
+              <span class="battery">55</span>
             </div>
-          </div>
+          </header>
 
-          <div class="lock-main">
-            <div class="face-id-shell" aria-label="Face ID panel">
-              <div class="face-id-ring">
-                <svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-label="Face ID icon" xmlns="http://www.w3.org/2000/svg">
+          <main class="lock-main">
+            <div class="faceid-badge" aria-label="Face ID panel">
+              <div class="faceid-ring">
+                <svg viewBox="0 0 96 96" width="76" height="76" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="M32 42C32 29.85 41.85 20 54 20C66.15 20 76 29.85 76 42V43H81V42C81 26.54 68.46 14 53 14C37.54 14 25 26.54 25 42V43H32V42Z" fill="rgba(148,255,230,0.92)"/>
-                  <path d="M35 42C35 33.86 41.86 27 50 27H51C59.14 27 66 33.86 66 42V49C66 57.14 59.14 64 51 64H50C41.86 64 35 57.14 35 49V42Z" fill="none" stroke="rgba(148,255,230,0.92)" stroke-width="4.5" stroke-linecap="round"/>
+                  <path d="M35 42C35 33.86 41.86 27 50 27H51C59.14 27 66 33.86 66 42V49C66 57.14 59.14 64 51 64H50C41.86 64 35 57.14 35 49V42Z" fill="none" stroke="rgba(148,255,230,0.92)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M34 52C39.5 60.5 48 65 59 65C66.5 65 74 61.4 79 55" fill="none" stroke="rgba(148,255,230,0.92)" stroke-width="4.5" stroke-linecap="round"/>
                   <circle cx="46" cy="46" r="2.6" fill="rgba(148,255,230,0.92)"/>
                   <circle cx="58" cy="46" r="2.6" fill="rgba(148,255,230,0.92)"/>
@@ -43,493 +43,229 @@
               </div>
             </div>
 
-            <div class="title-wrap">
+            <div class="title-block">
               <h1 class="lock-title">Auralis</h1>
-              <div class="lock-subtext">Face ID / Unlock</div>
+              <div class="lock-subtitle">FACE ID / UNLOCK</div>
             </div>
 
-            <button id="biometric-btn" class="face-btn" type="button">Use Face ID</button>
+            <button id="unlock-face" class="unlock-button" type="button">Use Face ID</button>
 
-            <div class="passcode-wrap">
-              <div class="passcode-dots" aria-label="PIN code dots">
-                <span class="passcode-dot"></span>
-                <span class="passcode-dot"></span>
-                <span class="passcode-dot"></span>
-                <span class="passcode-dot"></span>
-              </div>
-
-              <div class="passcode-pad" aria-label="Numeric keypad">
-                <button class="digit" type="button" data-value="1">1</button>
-                <button class="digit" type="button" data-value="2">2</button>
-                <button class="digit" type="button" data-value="3">3</button>
-                <button class="digit" type="button" data-value="4">4</button>
-                <button class="digit" type="button" data-value="5">5</button>
-                <button class="digit" type="button" data-value="6">6</button>
-                <button class="digit" type="button" data-value="7">7</button>
-                <button class="digit" type="button" data-value="8">8</button>
-                <button class="digit" type="button" data-value="9">9</button>
-                <button class="digit digit-icon" type="button" data-value="delete" aria-label="Delete">⌫</button>
-                <button class="digit zero" type="button" data-value="0">0</button>
-                <button class="digit digit-icon" type="button" data-value="enter" aria-label="Enter">→</button>
-              </div>
+            <div class="passcode-dots" aria-label="PIN indicator">
+              <span class="passcode-dot"></span>
+              <span class="passcode-dot"></span>
+              <span class="passcode-dot"></span>
+              <span class="passcode-dot"></span>
             </div>
-          </div>
 
-          <div class="lock-footer">
-            <span>Emergency</span>
-            <span>Privacy</span>
-          </div>
+            <div class="keypad" aria-label="PIN keypad">
+              <button class="digit keypad-key" type="button" data-value="1">1</button>
+              <button class="digit keypad-key" type="button" data-value="2">2</button>
+              <button class="digit keypad-key" type="button" data-value="3">3</button>
+
+              <button class="digit keypad-key" type="button" data-value="4">4</button>
+              <button class="digit keypad-key" type="button" data-value="5">5</button>
+              <button class="digit keypad-key" type="button" data-value="6">6</button>
+
+              <button class="digit keypad-key" type="button" data-value="7">7</button>
+              <button class="digit keypad-key" type="button" data-value="8">8</button>
+              <button class="digit keypad-key" type="button" data-value="9">9</button>
+
+              <button class="keypad-action keypad-key delete-key" type="button" data-value="delete" aria-label="Delete"><span>×</span></button>
+              <button class="digit keypad-key" type="button" data-value="0">0</button>
+              <button class="keypad-action keypad-key enter-key" type="button" data-value="enter" aria-label="Enter">→</button>
+            </div>
+
+            <div class="lock-footer">
+              <span>EMERGENCY</span>
+              <span>PRIVACY</span>
+            </div>
+          </main>
         </div>
       </div>
 
-      <div id="app-shell" class="app-shell">
-        <div class="iphone-frame">
-          <div class="ambient-glow glow-1"></div>
-          <div class="ambient-glow glow-2"></div>
-          <div class="ambient-glow glow-3"></div>
+      <div id="main-app" class="main-app">
+        <div class="phone-shell">
+          <header class="topbar">
+            <div class="topbar-title">
+              <span class="topbar-hello">Привіт</span>
+              <strong id="topbar-name">Alex</strong>
+            </div>
+            <div class="topbar-actions">
+              <button class="icon-button" type="button" data-action="notify" aria-label="Notifications">
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 4a4 4 0 0 1 4 4v2.5c0 1 .4 2 .9 2.7l1.3 1.8H5.8l1.3-1.8c.5-.7.9-1.7.9-2.7V8a4 4 0 0 1 4-4Zm0 16a2.5 2.5 0 0 1-2.45-2h4.9A2.5 2.5 0 0 1 12 20Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <button class="profile-chip" type="button" data-action="profile" aria-label="Profile">
+                <img id="profile-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="User profile" />
+              </button>
+            </div>
+          </header>
 
-          <div class="app-inner">
-            <header class="topbar">
-              <div class="profile-block">
-                <div class="profile-avatar-wrap">
-                  <img id="profile-avatar" class="profile-avatar" src="" alt="avatar" />
-                  <span class="online-dot"></span>
+          <main class="app-content">
+            <section id="home-tab" class="tab-panel active">
+              <div class="balance-card">
+                <div class="balance-meta">
+                  <span>Рахунок</span>
+                  <button class="mini-button" type="button" data-action="more">•••</button>
                 </div>
-
-                <div class="profile-meta">
-                  <div class="chip-label">Auralis VIP</div>
-                  <h2 id="welcome-name">Привіт, Alex!</h2>
+                <div class="balance-value-row">
+                  <span class="currency">₴</span>
+                  <span id="balance-value">14,850.50</span>
+                </div>
+                <div class="balance-subrow">
+                  <span>+ 3.2% this month</span>
+                  <button class="pill-button" type="button" data-action="topup">Поповнити</button>
                 </div>
               </div>
 
-              <div class="header-actions">
-                <button id="install-button" class="icon-btn hidden" type="button" aria-label="Install app">
-                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3v10.5m0 0L7.5 15m4.5 4.5 4.5-4.5M4 18.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="quick-actions" aria-label="Quick actions">
+                <button class="action-button" type="button" data-action="transfer">
+                  <span class="action-icon">↗</span>
+                  <span>Переказ</span>
                 </button>
-                <button id="face-button" class="icon-btn" type="button" aria-label="Face ID">
-                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 8.5c0-2.7 2.2-4.9 4.9-4.9h.2c2.7 0 4.9 2.2 4.9 4.9v.3h1.5V8.5c0-3.6-2.9-6.5-6.5-6.5h-.3C8.6 2 5.5 4.9 5.5 8.5v.3H7v-.3Zm-2.5 2.5h1.5v4.9A4.5 4.5 0 0 0 10.5 20h3a4.5 4.5 0 0 0 4.5-4.5v-4.9h1.5v4.9a6 6 0 0 1-6 6h-3a6 6 0 0 1-6-6v-4.9Zm4.5 1.5h3.8M9.8 15.5c1.1 1.3 2.2 2 4.4 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <button class="action-button" type="button" data-action="topup">
+                  <span class="action-icon">＋</span>
+                  <span>Поповнити</span>
                 </button>
-                <button id="notify-button" class="icon-btn" type="button" aria-label="Notifications">
-                  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M9.5 18h5m-8.5 0h12a2 2 0 0 0-2-2v-4.7a4.8 4.8 0 1 0-9.6 0V16a2 2 0 0 0-2 2ZM10 20.5a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                  <span class="notif-dot"></span>
+                <button class="action-button" type="button" data-action="goal">
+                  <span class="action-icon">◎</span>
+                  <span>Скарб</span>
+                </button>
+                <button class="action-button" type="button" data-action="more">
+                  <span class="action-icon">⋯</span>
+                  <span>Більше</span>
                 </button>
               </div>
-            </header>
 
-            <main class="content-area">
-              <section id="tab-home" class="tab-panel active">
-                <div class="card-wrap">
-                  <div id="bank-card" class="bank-card">
-                    <div class="card-shine"></div>
-                    <div class="card-header">
-                      <div>
-                        <div class="card-badge">Auralis Platinum</div>
-                        <div class="balance-row">
-                          <span>₴</span>
-                          <span id="balance-value">14 850</span>
-                          <span class="balance-cents">.50</span>
-                        </div>
-                      </div>
-                      <div class="card-network">VISA</div>
+              <div class="section-header">
+                <h3>Останні транзакції</h3>
+                <button type="button" class="link-button" data-action="more">Усі</button>
+              </div>
+              <div id="transaction-list" class="transaction-list"></div>
+
+              <div class="section-header">
+                <h3>Цілі накопичення</h3>
+                <button type="button" class="link-button" data-action="goal">Додати</button>
+              </div>
+              <div id="jar-list" class="jar-list"></div>
+            </section>
+
+            <section id="cards-tab" class="tab-panel">
+              <div class="tab-card glass-panel">
+                <div class="tab-card-header">
+                  <span>Картки</span>
+                  <button class="mini-button" type="button" data-action="more">Налаштування</button>
+                </div>
+                <div class="bank-card" id="bank-card">
+                  <div class="bank-card-face front">
+                    <div class="bank-card-top">
+                      <span>TeenBank</span>
+                      <span>VISA</span>
                     </div>
-
-                    <div class="card-middle">
-                      <div class="chip"></div>
-                      <button id="flip-card" class="mini-btn" type="button">CVV / Деталі</button>
-                    </div>
-
-                    <div class="card-bottom">
+                    <div class="chip"></div>
+                    <div class="card-number">•••• 7248</div>
+                    <div class="card-footer">
                       <div>
-                        <span class="label">Власник</span>
-                        <strong>ALEXANDER D.</strong>
+                        <small>Власник</small>
+                        <strong>Alex Morgan</strong>
                       </div>
                       <div>
-                        <span class="label">Термін</span>
-                        <strong>08/28</strong>
+                        <small>До</small>
+                        <strong>08/29</strong>
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <div class="action-grid">
-                  <button class="action-item" data-action="transfer" type="button">
-                    <span class="icon-wrap emerald"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 16.5l6.1-6.1m0 0H5.2m4.9 0v4.9M20 7.5l-6.1 6.1m0 0H18.8m-4.9 0V8.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    <span>Переказ</span>
-                  </button>
-
-                  <button class="action-item" data-action="topup" type="button">
-                    <span class="icon-wrap teal"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-                    <span>Поповнити</span>
-                  </button>
-
-                  <button class="action-item" data-action="jar" type="button">
-                    <span class="icon-wrap violet"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M7.5 7.5A2.5 2.5 0 0 1 10 5h4a2.5 2.5 0 0 1 2.5 2.5v.7a4.8 4.8 0 0 1-4.2 4.7c-1.7.4-3.4.4-5.1 0A4.8 4.8 0 0 1 7.5 8.2v-.7Zm-2 4.3c0 4.3 2 6.2 6.5 6.2s6.5-1.9 6.5-6.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-                    <span>Скарб</span>
-                  </button>
-
-                  <button class="action-item" data-action="more" type="button">
-                    <span class="icon-wrap indigo"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M4 6.5h7.5M4 12h16M4 17.5h11.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
-                    <span>Більше</span>
-                  </button>
-                </div>
-
-                <div class="panel-block">
-                  <div class="panel-header">
-                    <h3>Швидкі контакти</h3>
-                    <button type="button" class="text-link">Всі (12)</button>
-                  </div>
-
-                  <div id="contacts-list" class="contacts-row"></div>
-                </div>
-
-                <div class="panel-block">
-                  <div class="panel-header">
-                    <h3>Останні операції</h3>
-                    <button type="button" class="icon-only" aria-label="search">
-                      <svg viewBox="0 0 24 24" width="16" height="16"><path d="M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Zm9 2-5.5-5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                    </button>
-                  </div>
-
-                  <div id="transactions-list" class="transactions-list"></div>
-                </div>
-              </section>
-
-              <section id="tab-analytics" class="tab-panel">
-                <div class="panel-header large">
-                  <div>
-                    <h3>Аналітика</h3>
-                    <small>Жовтень 2026</small>
-                  </div>
-                  <span class="trend-pills">-12% vs last month</span>
-                </div>
-
-                <div class="stat-card">
-                  <div class="chart-bars" aria-label="weekly chart">
-                    <span style="height:40%"></span>
-                    <span style="height:62%"></span>
-                    <span style="height:32%"></span>
-                    <span style="height:88%"></span>
-                    <span style="height:55%"></span>
-                    <span style="height:72%"></span>
-                  </div>
-                  <div class="chart-labels">
-                    <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span>
+                  <div class="bank-card-face back">
+                    <div class="magnetic-line"></div>
+                    <div class="cvv-row">
+                      <span>CVV</span>
+                      <strong>548</strong>
+                    </div>
                   </div>
                 </div>
-
-                <div class="panel-block">
-                  <div class="category-list" id="categories-list"></div>
+                <div class="card-actions">
+                  <button type="button" class="secondary-button" data-action="topup">Поповнити</button>
+                  <button type="button" class="secondary-button" data-action="transfer">Переказ</button>
                 </div>
-              </section>
+              </div>
+            </section>
 
-              <section id="tab-savings" class="tab-panel">
-                <div class="panel-header large">
-                  <div>
-                    <h3>Скарбнички</h3>
-                    <small>Накопичуй на мрії</small>
-                  </div>
-                  <button id="add-jar" class="fab" type="button" aria-label="Add target">+</button>
+            <section id="savings-tab" class="tab-panel">
+              <div class="tab-card glass-panel">
+                <div class="tab-card-header">
+                  <span>Накоплення</span>
+                  <button class="mini-button" type="button" data-action="goal">+ Ціль</button>
                 </div>
-
                 <div id="savings-list" class="savings-list"></div>
-              </section>
+              </div>
+            </section>
 
-              <section id="tab-settings" class="tab-panel">
-                <div class="panel-header large">
-                  <div>
-                    <h3>Налаштування</h3>
-                    <small>Твій стиль Auralis</small>
+            <section id="settings-tab" class="tab-panel">
+              <div class="tab-card glass-panel settings-stack">
+                <div class="settings-row">
+                  <div class="setting-copy">
+                    <strong>Face ID</strong>
+                    <small>Швидкий доступ до рахунку</small>
                   </div>
-                </div>
-
-                <div class="settings-card">
-                  <h4>Вибір теми</h4>
-                  <div class="theme-grid">
-                    <button class="theme-swatch emerald active" data-theme="emerald" type="button"><span>Emerald</span></button>
-                    <button class="theme-swatch violet" data-theme="violet" type="button"><span>Purple</span></button>
-                    <button class="theme-swatch amber" data-theme="amber" type="button"><span>Gold</span></button>
-                  </div>
-                </div>
-
-                <div class="settings-list">
-                  <div class="setting-row">
-                    <div class="setting-title"><span class="icon-small teal">✔</span><span>Батьківський контроль</span></div>
-                    <span class="pill success">Активний</span>
-                  </div>
-
-                  <div class="setting-row">
-                    <div class="setting-title"><span class="icon-small violet">◌</span><span>Face ID / Touch ID</span></div>
+                  <label class="switch">
                     <input id="biometric-toggle" type="checkbox" checked />
-                  </div>
+                    <span class="slider"></span>
+                  </label>
+                </div>
 
-                  <div class="setting-row action-row">
-                    <div class="setting-title"><span class="icon-small amber">✦</span><span>Змінити PIN</span></div>
-                    <button id="change-pin-btn" class="secondary-btn" type="button">Змінити</button>
+                <div class="settings-row">
+                  <div class="setting-copy">
+                    <strong>PIN-код</strong>
+                    <small>Змінити доступ до акаунта</small>
+                  </div>
+                  <button id="change-pin-btn" class="secondary-button" type="button">Змінити</button>
+                </div>
+
+                <div class="settings-row theme-row">
+                  <div class="setting-copy">
+                    <strong>Тема</strong>
+                    <small>Підбір кольору інтерфейсу</small>
+                  </div>
+                  <div class="theme-picker">
+                    <button class="theme-swatch active" data-theme="emerald" type="button" aria-label="Emerald theme"></button>
+                    <button class="theme-swatch" data-theme="violet" type="button" aria-label="Violet theme"></button>
+                    <button class="theme-swatch" data-theme="amber" type="button" aria-label="Amber theme"></button>
                   </div>
                 </div>
-              </section>
-            </main>
+              </div>
+            </section>
+          </main>
 
-            <nav class="bottom-nav" aria-label="Main navigation">
-              <div id="nav-pill" class="nav-pill"></div>
-
-              <button class="nav-item active" data-tab="home" type="button">
-                <svg viewBox="0 0 24 24" width="17" height="17"><path d="M3 11.5 12 4l9 7.5v7.5a1.5 1.5 0 0 1-1.5 1.5h-5v-7h-5v7H4.5A1.5 1.5 0 0 1 3 19v-7.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span>Головна</span>
-              </button>
-
-              <button class="nav-item" data-tab="analytics" type="button">
-                <svg viewBox="0 0 24 24" width="17" height="17"><path d="M4 18V7m5 11V4m5 14v-7m5 7V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span>Аналітика</span>
-              </button>
-
-              <button class="nav-item" data-tab="savings" type="button">
-                <svg viewBox="0 0 24 24" width="17" height="17"><path d="M8 11V9.5A4 4 0 0 1 12 5.5a4 4 0 0 1 4 4V11M6 11h12v8H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span>Скарб</span>
-              </button>
-
-              <button class="nav-item" data-tab="settings" type="button">
-                <svg viewBox="0 0 24 24" width="17" height="17"><path d="M10.8 3.5l.8-1.5 2.4 1 1.4 1.9 2.2.6 1 2.2-1 1.6.5 2.1.9 2.3-2.1 1.2-1.7 1.6-.8 2.2-2.2.6-1.9 1.4-1.3 1.9-2.4-1-1.4-1.9-2.4-.6-1.6-2.2-1-1.5 1-1.1 2.1-.7 2.2-1.6 1.7-2.2-1-1.9-1.4-1.3-1.9L4 9.9l1 2.4.7 2.2-1.6 1.7-2.2 1 .5 2.2 2.2.6 1.5 2.1 2.1 1.1 1.8-.9.9-1.8 1.8-.9 2.1-.5z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span>Стиль</span>
-              </button>
-            </nav>
-          </div>
+          <nav class="bottom-nav" aria-label="Main navigation">
+            <div class="nav-pill" aria-hidden="true"></div>
+            <button class="nav-item active" type="button" data-tab="home" aria-label="Home">
+              <span>⌂</span>
+            </button>
+            <button class="nav-item" type="button" data-tab="cards" aria-label="Cards">
+              <span>◫</span>
+            </button>
+            <button class="nav-item" type="button" data-tab="savings" aria-label="Savings">
+              <span>◎</span>
+            </button>
+            <button class="nav-item" type="button" data-tab="settings" aria-label="Settings">
+              <span>⚙</span>
+            </button>
+          </nav>
         </div>
       </div>
     </div>
 
     <div id="sheet-backdrop" class="sheet-backdrop"></div>
-    <div id="action-sheet" class="action-sheet" role="dialog" aria-modal="true" aria-label="Меню дій">
+    <aside id="action-sheet" class="action-sheet" aria-live="polite">
       <div class="sheet-handle"></div>
-      <div id="sheet-title" class="sheet-title">Оберіть дію</div>
-      <div id="sheet-body" class="sheet-body"></div>
-    </div>
-
-    <div id="toast" class="toast" aria-live="polite"></div>
-
-    <div id="faceid-modal" class="faceid-modal" aria-live="assertive">
-      <div class="scan-ring">
-        <svg viewBox="0 0 96 96" width="54" height="54" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-          <path d="M32 42C32 29.85 41.85 20 54 20C66.15 20 76 29.85 76 42V43H81V42C81 26.54 68.46 14 53 14C37.54 14 25 26.54 25 42V43H32V42Z" fill="rgba(148,255,230,0.92)"/>
-          <path d="M35 42C35 33.86 41.86 27 50 27H51C59.14 27 66 33.86 66 42V49C66 57.14 59.14 64 51 64H50C41.86 64 35 57.14 35 49V42Z" fill="none" stroke="rgba(148,255,230,0.92)" stroke-width="4.5" stroke-linecap="round"/>
-          <path d="M34 52C39.5 60.5 48 65 59 65C66.5 65 74 61.4 79 55" fill="none" stroke="rgba(148,255,230,0.92)" stroke-width="4.5" stroke-linecap="round"/>
-          <circle cx="46" cy="46" r="2.6" fill="rgba(148,255,230,0.92)"/>
-          <circle cx="58" cy="46" r="2.6" fill="rgba(148,255,230,0.92)"/>
-          <path d="M43.5 55C47.1 58.2 51.7 59.4 57.2 58.3" fill="none" stroke="rgba(148,255,230,0.92)" stroke-width="3.2" stroke-linecap="round"/>
-        </svg>
+      <div class="sheet-header">
+        <h3 id="sheet-title">Дія</h3>
+        <button id="sheet-close" class="sheet-close" type="button" aria-label="Close sheet">×</button>
       </div>
-      <p>Face ID</p>
-      <span>Сканування обличчя…</span>
-    </div>
+      <div id="sheet-content" class="sheet-content"></div>
+    </aside>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <script src="./app.js"></script>
   </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
