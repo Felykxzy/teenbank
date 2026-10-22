@@ -1,877 +1,658 @@
 <!DOCTYPE html>
-<html lang="uk" class="h-full w-full overflow-hidden select-none">
+<html lang="uk" class="h-full select-none">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>TeenBank — iOS Liquid Glass</title>
+    
+    <!-- PWA & Mobile Web App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#080b14">
-    <title>TeenBank iOS Dynamic Glass</title>
+    <meta name="apple-mobile-web-app-title" content="TeenBank">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#030712">
+
+    <!-- App Icon (SVG Data URI) -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='28' fill='url(%23g)'/><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%25' stop-color='%236366f1'/><stop offset='50%25' stop-color='%23a855f7'/><stop offset='100%25' stop-color='%2310b981'/></linearGradient></defs><path d='M30 30 L70 30 M50 30 L50 75' stroke='white' stroke-width='10' stroke-linecap='round'/></svg>">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Pro Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts (Plus Jakarta Sans / Inter) -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         * {
-            -webkit-tap-highlight-color: transparent;
-            box-sizing: border-box;
-            user-select: none;
-        }
-
-        :root {
-            --sat: env(safe-area-inset-top, 0px);
-            --sab: env(safe-area-inset-bottom, 0px);
-        }
-
-        html, body {
-            background-color: #05070f;
-            color: #ffffff;
             font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: pan-y;
+        }
+
+        body {
+            background-color: #030712;
+            color: #f3f4f6;
             overflow: hidden;
-            width: 100%;
-            height: 100%;
+            overscroll-behavior: none;
             height: 100dvh;
-            position: fixed;
-            margin: 0;
-            padding: 0;
-            touch-action: none;
+            width: 100vw;
         }
 
-        /* LIQUID GLASS ULTRA REALISTIC SHADERS */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(35px) saturate(220%);
-            -webkit-backdrop-filter: blur(35px) saturate(220%);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.35);
-        }
-
-        .glass-card-bg {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.02) 100%);
-            backdrop-filter: blur(45px) saturate(240%);
-            -webkit-backdrop-filter: blur(45px) saturate(240%);
-            border: 1px solid rgba(255, 255, 255, 0.22);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.5);
-        }
-
-        .liquid-nav-container {
-            background: rgba(10, 14, 26, 0.82);
-            backdrop-filter: blur(45px) saturate(240%);
-            -webkit-backdrop-filter: blur(45px) saturate(240%);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-        }
-
-        .glass-pill {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-        }
-
-        /* ANIMATED SLIDING TAB PILL */
-        .liquid-sliding-pill {
-            position: absolute;
-            top: 5px;
-            bottom: 5px;
-            width: calc(25% - 8px);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.08) 100%);
-            backdrop-filter: blur(30px) saturate(210%);
-            -webkit-backdrop-filter: blur(30px) saturate(210%);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 22px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), inset 0 1px 1.5px rgba(255, 255, 255, 0.6);
-            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-            pointer-events: none;
-        }
-
-        /* AMBIENT GLOW BACKGROUND ORBS */
-        .bg-orb {
+        /* Ambient Glass Background Glows */
+        .ambient-glow {
             position: absolute;
             border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.55;
+            filter: blur(80px);
+            opacity: 0.5;
             pointer-events: none;
-            animation: orbFloat 14s infinite alternate ease-in-out;
-        }
-        .orb-1 {
-            width: 380px; height: 380px;
-            background: #9333ea;
-            top: -100px; left: -100px;
-        }
-        .orb-2 {
-            width: 360px; height: 360px;
-            background: #10b981;
-            bottom: -50px; right: -90px;
-            animation-delay: -7s;
-        }
-        .orb-3 {
-            width: 300px; height: 300px;
-            background: #0284c7;
-            top: 35%; left: 25%;
-            animation-delay: -3.5s;
+            will-change: transform;
+            animation: pulseGlow 8s ease-in-out infinite alternate;
         }
 
-        @keyframes orbFloat {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(40px, 50px) scale(1.15); }
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.4; }
+            50% { transform: scale(1.15) translate(20px, -20px); opacity: 0.6; }
+            100% { transform: scale(0.95) translate(-15px, 15px); opacity: 0.4; }
         }
 
-        /* 3D TILT & FLIP CARD STYLING */
-        .card-stage {
-            perspective: 1200px;
+        /* iOS Ultra Liquid Glassmorphism Styling */
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(35px) saturate(210%);
+            -webkit-backdrop-filter: blur(35px) saturate(210%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+                        inset 0 -1px 1px rgba(0, 0, 0, 0.2);
         }
 
-        .bank-card {
-            width: 100%;
-            height: 205px;
-            border-radius: 26px;
+        .liquid-glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.03) 100%);
+            backdrop-filter: blur(40px) saturate(220%);
+            -webkit-backdrop-filter: blur(40px) saturate(220%);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Shimmer Reflection Overlay */
+        .glass-shimmer {
             position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-            cursor: pointer;
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
-        }
-
-        .bank-card.is-flipped {
-            transform: rotateY(180deg) !important;
-        }
-
-        .card-face {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            -webkit-backface-visibility: hidden;
-            border-radius: 26px;
-            padding: 22px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border: 1px solid rgba(255, 255, 255, 0.35);
             overflow: hidden;
         }
-
-        .card-back-face {
-            transform: rotateY(180deg);
-            padding: 0;
-            background: linear-gradient(135deg, #1e293b, #0f172a);
-        }
-
-        /* CARD SKINS */
-        .skin-neon {
-            background: linear-gradient(135deg, rgba(147, 51, 234, 0.92) 0%, rgba(16, 185, 129, 0.75) 100%);
-        }
-        .skin-glass {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.05) 100%);
-        }
-        .skin-sunset {
-            background: linear-gradient(135deg, rgba(244, 63, 94, 0.92) 0%, rgba(245, 158, 11, 0.85) 100%);
-        }
-        .skin-dark {
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(88, 28, 135, 0.92) 100%);
-        }
-        .skin-gold {
-            background: linear-gradient(135deg, rgba(234, 179, 8, 0.9) 0%, rgba(180, 83, 9, 0.85) 100%);
-        }
-
-        /* SCROLLABLE BODY CONTAINMENT */
-        .app-scroll-body {
-            overflow-y: auto;
-            touch-action: pan-y;
-            -webkit-overflow-scrolling: touch;
-        }
-        .app-scroll-body::-webkit-scrollbar { display: none; }
-
-        .page-content {
-            transition: opacity 0.35s ease, transform 0.35s ease;
-        }
-        .page-content.hidden-page {
-            display: none;
-            opacity: 0;
-            transform: scale(0.95);
-        }
-
-        /* FACE ID BIOMETRIC SCANNER ANIMATION */
-        .face-id-laser {
+        .glass-shimmer::before {
+            content: '';
             position: absolute;
-            left: 10%;
-            right: 10%;
-            height: 2px;
-            background: #10b981;
-            box-shadow: 0 0 15px #10b981;
-            animation: laserScan 1.8s infinite alternate ease-in-out;
+            top: -150%;
+            left: -150%;
+            width: 300%;
+            height: 300%;
+            background: linear-gradient(
+                45deg,
+                transparent 45%,
+                rgba(255, 255, 255, 0.12) 50%,
+                transparent 55%
+            );
+            transform: rotate(30deg);
+            animation: shimmerMove 6s infinite linear;
+            pointer-events: none;
         }
 
-        @keyframes laserScan {
-            0% { top: 20%; }
-            100% { top: 80%; }
+        @keyframes shimmerMove {
+            0% { transform: translateY(-100%) rotate(30deg); }
+            100% { transform: translateY(100%) rotate(30deg); }
         }
 
-        /* PULSING NFC GLOW */
-        .nfc-glow {
-            animation: nfcPulse 2s infinite ease-out;
+        /* 3D Dynamic Tilt Card Container */
+        .card-3d-wrapper {
+            perspective: 1000px;
         }
-        @keyframes nfcPulse {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6); }
-            70% { box-shadow: 0 0 0 20px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        .card-3d-inner {
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+
+        /* Hide scrollbars completely for native feel */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Smooth Tab Animations */
+        .tab-content {
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .tab-content.hidden-tab {
+            opacity: 0;
+            transform: scale(0.96) translateY(10px);
+            pointer-events: none;
+            position: absolute;
+            width: 100%;
+            inset: 0;
+        }
+
+        /* Sliding Pill Effect on Tab Bar */
+        .nav-pill {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* iOS Face ID Overlay Blur */
+        .faceid-modal {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
     </style>
 </head>
-<body class="w-full h-full bg-[#05070f] text-white flex justify-center items-center">
+<body class="flex flex-col h-full w-full relative overflow-hidden bg-gray-950 text-gray-100">
 
-    <!-- Dynamic Ambient Glowing Orbs -->
-    <div class="bg-orb orb-1"></div>
-    <div class="bg-orb orb-2"></div>
-    <div class="bg-orb orb-3"></div>
+    <!-- Dynamic Background Lights (Glows) -->
+    <div class="ambient-glow w-96 h-96 bg-indigo-600/40 -top-20 -left-20"></div>
+    <div class="ambient-glow w-80 h-80 bg-emerald-500/30 top-1/3 -right-20" style="animation-delay: -3s;"></div>
+    <div class="ambient-glow w-96 h-96 bg-purple-600/30 -bottom-20 left-10" style="animation-delay: -5s;"></div>
 
-    <!-- MAIN APP SCREEN (FULL MOBILE VIEWPORT) -->
-    <div class="relative w-full h-full max-w-[430px] mx-auto flex flex-col justify-between overflow-hidden">
+    <!-- MAIN WRAPPER (Fits Mobile Screen with Safe Area) -->
+    <div class="flex-1 flex flex-col h-full w-full max-w-md mx-auto relative z-10 pt-[env(safe-area-inset-top,12px)] pb-[env(safe-area-inset-bottom,12px)] px-4 overflow-hidden">
 
-        <!-- TOP STATUS HEADER WITH DYNAMIC TIME & IPHONE NOTCH AREA -->
-        <div class="pt-[calc(env(safe-area-inset-top,12px)+6px)] px-6 pb-2 flex justify-between items-center z-40">
-            <div class="flex items-center gap-2.5">
-                <div class="w-10 h-10 rounded-2xl glass-panel flex items-center justify-center text-emerald-400 font-black text-xl shadow-lg">
-                    <i class="fa-solid fa-bolt"></i>
+        <!-- TOP BAR / iOS STATUS & PROFILE -->
+        <header class="flex items-center justify-between py-3 mb-2 shrink-0">
+            <div class="flex items-center space-x-3">
+                <div class="relative">
+                    <img id="user-avatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" 
+                         alt="Avatar" class="w-11 h-11 rounded-full object-cover border-2 border-emerald-400/80 shadow-lg ring-2 ring-emerald-500/20">
+                    <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-400 border-2 border-gray-950 rounded-full"></div>
                 </div>
                 <div>
-                    <div class="flex items-center gap-1.5">
-                        <h1 class="font-black text-base tracking-tight text-white">TeenBank</h1>
-                        <span id="live-time" class="text-[10px] font-mono font-bold text-white/50 bg-white/10 px-1.5 py-0.5 rounded-md">19:48</span>
+                    <div class="flex items-center space-x-1">
+                        <span class="text-xs font-semibold uppercase tracking-wider text-emerald-400">Teen VIP</span>
+                        <i data-lucide="sparkles" class="w-3 h-3 text-emerald-400"></i>
                     </div>
-                    <p class="text-[9.5px] text-emerald-400 font-bold flex items-center gap-1">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span> PRO • 0% Комісія NBU
-                    </p>
+                    <h1 class="text-base font-bold text-white tracking-tight flex items-center gap-1">
+                        Привіт, Алекс!
+                    </h1>
                 </div>
             </div>
 
-            <div class="flex items-center gap-2">
-                <button onclick="triggerApplePaySim()" class="w-10 h-10 rounded-2xl glass-panel flex items-center justify-center text-white/90 active:scale-90 transition nfc-glow">
-                    <i class="fa-brands fa-apple text-sm"></i>
+            <!-- Action Buttons -->
+            <div class="flex items-center space-x-2">
+                <button onclick="triggerFaceID()" class="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-gray-200 active:scale-90 transition">
+                    <i data-lucide="scan-face" class="w-5 h-5 text-emerald-400"></i>
                 </button>
-                <button onclick="triggerToast('Сповіщення', 'Зараховано +250.00 ₴ за участь у квізі!')" class="w-10 h-10 rounded-2xl glass-panel flex items-center justify-center text-white/90 active:scale-90 transition relative">
-                    <i class="fa-regular fa-bell text-sm"></i>
-                    <span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-emerald-400 border border-slate-900"></span>
+                <button onclick="toggleNotifications()" class="relative w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-gray-200 active:scale-90 transition">
+                    <i data-lucide="bell" class="w-5 h-5"></i>
+                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-emerald-400 rounded-full ring-2 ring-gray-950 animate-ping"></span>
+                    <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-emerald-400 rounded-full ring-2 ring-gray-950"></span>
                 </button>
             </div>
-        </div>
+        </header>
 
-        <!-- APP BODY CONTAINER (SCROLLABLE AREA) -->
-        <div id="app-body" class="flex-1 app-scroll-body px-5 py-2 z-30 space-y-4">
+        <!-- CONTENT VIEWS CONTAINER -->
+        <div class="flex-1 relative overflow-y-auto no-scrollbar pb-24">
+            
+            <!-- ================= TAB 1: MAIN HOME VIEW ================= -->
+            <div id="tab-home" class="tab-content space-y-5">
 
-            <!-- PAGE 1: HOME -->
-            <div id="page-home" class="page-content space-y-4">
+                <!-- 3D GLASS VIRTUAL CARD -->
+                <div class="card-3d-wrapper py-1">
+                    <div id="bank-card" class="card-3d-inner relative w-full h-52 rounded-3xl p-6 flex flex-col justify-between liquid-glass-card glass-shimmer overflow-hidden shadow-2xl cursor-pointer">
+                        
+                        <!-- Card Glow Backdrop -->
+                        <div class="absolute -right-10 -bottom-10 w-44 h-44 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none"></div>
+                        <div class="absolute -left-10 -top-10 w-44 h-44 bg-indigo-500/20 rounded-full blur-2xl pointer-events-none"></div>
 
-                <!-- BALANCE DISPLAY WITH CURRENCY TOGGLE -->
-                <div class="glass-card-bg rounded-3xl p-5 relative">
-                    <div class="flex justify-between items-center text-xs text-slate-300 font-medium">
-                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-wallet text-purple-400"></i> Основний рахунок</span>
-                        <div class="flex gap-1 bg-black/30 p-0.5 rounded-lg border border-white/10">
-                            <button onclick="setCurrency('UAH')" id="curr-uah" class="px-2 py-0.5 rounded text-[9px] font-bold bg-emerald-500 text-black">UAH</button>
-                            <button onclick="setCurrency('USD')" id="curr-usd" class="px-2 py-0.5 rounded text-[9px] font-bold text-white/60">USD</button>
-                            <button onclick="setCurrency('EUR')" id="curr-eur" class="px-2 py-0.5 rounded text-[9px] font-bold text-white/60">EUR</button>
-                        </div>
-                    </div>
-
-                    <div class="mt-3 flex items-baseline gap-1.5">
-                        <span id="user-balance" class="text-3xl font-black tracking-tight text-white">2 450.00</span>
-                        <span id="curr-symbol" class="text-xl font-extrabold text-emerald-400">₴</span>
-                    </div>
-
-                    <!-- SPARKLINE ANALYTICS CHART -->
-                    <div class="w-full h-14 my-2">
-                        <canvas id="miniChart"></canvas>
-                    </div>
-
-                    <!-- QUICK CONTACTS & RECENT TRANSFERS -->
-                    <div class="pt-2 border-t border-white/10">
-                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2">Швидкі перекази друзям</span>
-                        <div class="flex gap-3 overflow-x-auto pb-1">
-                            <button onclick="quickTransfer('Максим', '0971234567')" class="flex flex-col items-center gap-1 min-w-[50px] active:scale-90 transition">
-                                <div class="w-10 h-10 rounded-full glass-panel flex items-center justify-center font-bold text-xs text-purple-300 border-purple-400/40">М</div>
-                                <span class="text-[9px] text-slate-300 font-medium">Макс</span>
-                            </button>
-                            <button onclick="quickTransfer('Анна', '0639876543')" class="flex flex-col items-center gap-1 min-w-[50px] active:scale-90 transition">
-                                <div class="w-10 h-10 rounded-full glass-panel flex items-center justify-center font-bold text-xs text-emerald-300 border-emerald-400/40">А</div>
-                                <span class="text-[9px] text-slate-300 font-medium">Аня</span>
-                            </button>
-                            <button onclick="quickTransfer('Денис', '0505551122')" class="flex flex-col items-center gap-1 min-w-[50px] active:scale-90 transition">
-                                <div class="w-10 h-10 rounded-full glass-panel flex items-center justify-center font-bold text-xs text-cyan-300 border-cyan-400/40">Д</div>
-                                <span class="text-[9px] text-slate-300 font-medium">Денис</span>
-                            </button>
-                            <button onclick="openModal('contacts')" class="flex flex-col items-center gap-1 min-w-[50px] active:scale-90 transition">
-                                <div class="w-10 h-10 rounded-full glass-panel flex items-center justify-center text-xs text-white/60 border-dashed border-white/30">
-                                    <i class="fa-solid fa-plus"></i>
-                                </div>
-                                <span class="text-[9px] text-slate-400 font-medium">Ще</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- ACTION BUTTONS -->
-                    <div class="grid grid-cols-3 gap-2 mt-3">
-                        <button onclick="openModal('transfer')" class="glass-pill py-2.5 rounded-2xl flex flex-col items-center gap-1 active:scale-95 transition">
-                            <div class="w-8 h-8 rounded-full bg-purple-500/30 flex items-center justify-center text-purple-300">
-                                <i class="fa-solid fa-paper-plane text-xs"></i>
+                        <!-- Top Info -->
+                        <div class="flex justify-between items-start z-10">
+                            <div>
+                                <p class="text-xs uppercase tracking-widest text-emerald-300/80 font-bold">TeenBank Platinum</p>
+                                <p class="text-2xl font-extrabold text-white mt-0.5 tracking-tight">₴ 14 850<span class="text-emerald-400 text-lg">.50</span></p>
                             </div>
-                            <span class="text-[10px] font-bold">Переказ</span>
-                        </button>
-                        <button onclick="openModal('topup')" class="glass-pill py-2.5 rounded-2xl flex flex-col items-center gap-1 active:scale-95 transition">
-                            <div class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center text-emerald-300">
-                                <i class="fa-solid fa-plus text-xs"></i>
-                            </div>
-                            <span class="text-[10px] font-bold">Поповнити</span>
-                        </button>
-                        <button onclick="openModal('iban')" class="glass-pill py-2.5 rounded-2xl flex flex-col items-center gap-1 active:scale-95 transition">
-                            <div class="w-8 h-8 rounded-full bg-cyan-500/30 flex items-center justify-center text-cyan-300">
-                                <i class="fa-solid fa-building-columns text-xs"></i>
-                            </div>
-                            <span class="text-[10px] font-bold">Реквізити</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- 3D INTERACTIVE BANK CARD -->
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center px-1">
-                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Картка Teen VIP</span>
-                        <button onclick="switchTab('customizer', 3)" class="text-xs text-purple-400 font-bold flex items-center gap-1">
-                            <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i> Студія
-                        </button>
-                    </div>
-
-                    <div class="card-stage" id="card-touch-area">
-                        <div id="interactive-bank-card" class="bank-card skin-neon">
-                            <!-- FRONT FACE -->
-                            <div class="card-face">
-                                <div class="flex justify-between items-center">
-                                    <div class="flex items-center gap-1.5">
-                                        <i class="fa-solid fa-bolt text-lg text-emerald-300"></i>
-                                        <span class="font-black text-sm text-white">TeenBank</span>
-                                    </div>
-                                    <i class="fa-solid fa-wifi text-white/80 text-xs rotate-90"></i>
-                                </div>
-
-                                <div class="flex items-center justify-between my-auto">
-                                    <div class="w-10 h-7 rounded bg-amber-300/80 border border-amber-600/50 flex items-center justify-center">
-                                        <div class="w-6 h-4 border border-black/30 rounded-sm"></div>
-                                    </div>
-                                    <span id="card-sticker" class="px-2.5 py-0.5 rounded-lg glass-pill text-[9px] font-black text-amber-300 border-amber-400/50">
-                                        ⚡ TEEN VIP
-                                    </span>
-                                </div>
-
-                                <div class="flex justify-between items-end">
-                                    <div>
-                                        <p class="text-[8px] text-white/60 uppercase">Володар</p>
-                                        <p id="card-name-display" class="font-bold text-xs uppercase tracking-wide">ОЛЕКСАНДР ІВАНОВ</p>
-                                    </div>
-                                    <div class="text-right">
-                                        <p class="text-[8px] text-white/60">ТЕРМІН</p>
-                                        <p class="font-bold text-xs font-mono">08/28</p>
-                                    </div>
-                                    <span class="font-black italic text-sm tracking-wider">VISA</span>
-                                </div>
-                            </div>
-
-                            <!-- BACK FACE -->
-                            <div class="card-face card-back-face">
-                                <div class="w-full h-9 bg-black/90 mt-3"></div>
-                                <div class="px-4 flex justify-between items-center my-auto">
-                                    <div class="bg-white/20 h-7 w-1/2 rounded px-2 flex items-center justify-end border border-white/20">
-                                        <span class="font-mono text-xs text-black font-black bg-white px-2 rounded">832</span>
-                                    </div>
-                                    <span class="text-[10px] text-white/70 font-mono">CVV2 / CVC</span>
-                                </div>
-                                <p class="px-4 pb-2 text-[7px] text-white/40">TeenBank Ukraine • NBU License #102 • Support: 0 800 500 100</p>
+                            <div class="flex items-center space-x-2">
+                                <i data-lucide="wifi" class="w-5 h-5 text-white/70 rotate-90"></i>
+                                <span class="font-extrabold text-lg italic tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-200">VISA</span>
                             </div>
                         </div>
-                    </div>
-                    <p class="text-center text-[9.5px] text-slate-500 font-medium">Торкайтесь для 3D заломлення • Натисніть для перегляду CVV</p>
-                </div>
 
-                <!-- LIVE TRANSACTIONS WITH CATEGORY FILTERS -->
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center px-1">
-                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Історія транзакцій</span>
-                        <button onclick="clearTransactions()" class="text-[10px] text-rose-400 font-semibold">Очистити</button>
-                    </div>
+                        <!-- Chip & NFC Symbol -->
+                        <div class="flex items-center justify-between my-auto z-10">
+                            <div class="w-11 h-8 rounded-lg bg-gradient-to-tr from-amber-300 via-yellow-400 to-amber-200 p-0.5 flex flex-col justify-between shadow-inner">
+                                <div class="w-full h-full border border-black/20 rounded opacity-60"></div>
+                            </div>
+                            <button onclick="flipCard(event)" class="text-xs bg-white/10 hover:bg-white/20 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 text-white flex items-center space-x-1 transition active:scale-95">
+                                <i data-lucide="rotate-cw" class="w-3 h-3"></i>
+                                <span>CVV / Реквізити</span>
+                            </button>
+                        </div>
 
-                    <div id="tx-list" class="space-y-2">
-                        <div class="glass-panel p-3 rounded-2xl flex justify-between items-center">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-300 text-xs">
-                                    <i class="fa-solid fa-gamepad"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-bold">Steam Games</p>
-                                    <p class="text-[9px] text-slate-400">Розваги • Сьогодні 14:20</p>
-                                </div>
+                        <!-- Bottom Card Info -->
+                        <div class="flex justify-between items-end z-10">
+                            <div>
+                                <p class="text-[10px] text-gray-400 uppercase tracking-wider">Власник</p>
+                                <p class="text-sm font-semibold text-gray-100 tracking-wide">ALEXANDER D.</p>
                             </div>
                             <div class="text-right">
-                                <p class="text-xs font-bold text-white">-240.00 ₴</p>
-                                <span class="text-[8px] text-emerald-400 font-bold">+12 ₴ кешбек</span>
-                            </div>
-                        </div>
-
-                        <div class="glass-panel p-3 rounded-2xl flex justify-between items-center">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-300 text-xs">
-                                    <i class="fa-solid fa-burger"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-bold">McDonald's</p>
-                                    <p class="text-[9px] text-slate-400">Харчування • Сьогодні 12:05</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-xs font-bold text-white">-185.50 ₴</p>
-                                <span class="text-[8px] text-emerald-400 font-bold">+13 ₴ кешбек</span>
-                            </div>
-                        </div>
-
-                        <div class="glass-panel p-3 rounded-2xl flex justify-between items-center">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-300 text-xs">
-                                    <i class="fa-solid fa-arrow-down-left"></i>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-bold">Поповнення від батьків</p>
-                                    <p class="text-[9px] text-slate-400">Кишенькові • Вчора</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-xs font-bold text-emerald-400">+500.00 ₴</p>
-                                <span class="text-[8px] text-slate-400">Без комісії</span>
+                                <p class="text-[10px] text-gray-400 uppercase tracking-wider">Термін</p>
+                                <p class="text-sm font-semibold text-gray-100 tracking-wide">08/28</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-            </div>
-
-            <!-- PAGE 2: SAVINGS JAR -->
-            <div id="page-jar" class="page-content hidden-page space-y-4">
-                <div class="glass-card-bg p-5 rounded-3xl space-y-3">
-                    <div class="flex justify-between items-center">
-                        <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
-                            <i class="fa-solid fa-piggy-bank text-cyan-400"></i> Скарбничка «На PlayStation 5»
-                        </h3>
-                        <span class="text-[9px] text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full font-bold">+7% річних</span>
-                    </div>
-
-                    <div class="flex justify-between items-baseline">
-                        <span id="jar-val" class="text-2xl font-black text-emerald-400">7 350.00 ₴</span>
-                        <span class="text-[11px] text-slate-400">Ціль: 15 000 ₴</span>
-                    </div>
-
-                    <div class="w-full bg-slate-900/80 rounded-full h-3 p-0.5 overflow-hidden border border-white/10">
-                        <div id="jar-bar" class="bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 h-full rounded-full transition-all duration-500 shadow-md" style="width: 49%;"></div>
-                    </div>
-
-                    <div class="flex justify-between text-[10px] text-slate-400">
-                        <span>Прогрес: 49%</span>
-                        <span>Залишилось: 7 650 ₴</span>
-                    </div>
-
-                    <button onclick="openModal('jar-deposit')" class="w-full py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-emerald-500 font-extrabold text-xs shadow-lg active:scale-95 transition">
-                        Поповнити скарбничку
+                <!-- QUICK ACTIONS -->
+                <div class="grid grid-cols-4 gap-3">
+                    <button onclick="quickAction('send')" class="flex flex-col items-center gap-2 group">
+                        <div class="w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-emerald-400 group-active:scale-90 transition shadow-lg">
+                            <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-xs text-gray-300 font-medium">Переказати</span>
+                    </button>
+                    <button onclick="quickAction('topup')" class="flex flex-col items-center gap-2 group">
+                        <div class="w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-teal-400 group-active:scale-90 transition shadow-lg">
+                            <i data-lucide="plus" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-xs text-gray-300 font-medium">Поповнити</span>
+                    </button>
+                    <button onclick="quickAction('jar')" class="flex flex-col items-center gap-2 group">
+                        <div class="w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-indigo-400 group-active:scale-90 transition shadow-lg">
+                            <i data-lucide="piggy-bank" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-xs text-gray-300 font-medium">Скарбничка</span>
+                    </button>
+                    <button onclick="quickAction('more')" class="flex flex-col items-center gap-2 group">
+                        <div class="w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-purple-400 group-active:scale-90 transition shadow-lg">
+                            <i data-lucide="grid" class="w-6 h-6"></i>
+                        </div>
+                        <span class="text-xs text-gray-300 font-medium">Більше</span>
                     </button>
                 </div>
 
-                <!-- AUTOSAVE SETTINGS -->
-                <div class="glass-panel p-4 rounded-2xl space-y-2">
-                    <h4 class="text-xs font-bold flex items-center gap-2"><i class="fa-solid fa-coins text-amber-400"></i> Автонакопичення</h4>
+                <!-- QUICK TRANSFERS TO FRIENDS -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center px-1">
+                        <h3 class="text-sm font-bold text-gray-200 tracking-wide">Швидкий переказ друзям</h3>
+                        <span class="text-xs text-emerald-400 font-semibold cursor-pointer">Всі (12)</span>
+                    </div>
+                    <div class="flex space-x-3 overflow-x-auto no-scrollbar py-1">
+                        <div class="flex flex-col items-center space-y-1.5 shrink-0">
+                            <div class="w-12 h-12 rounded-full border-2 border-dashed border-emerald-400/50 flex items-center justify-center text-emerald-400 cursor-pointer active:scale-95 transition">
+                                <i data-lucide="user-plus" class="w-5 h-5"></i>
+                            </div>
+                            <span class="text-[11px] text-gray-400">Новий</span>
+                        </div>
+                        <div onclick="sendMoneyTo('Макс')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition border border-white/20">
+                            <span class="text-[11px] text-gray-200 font-medium">Макс</span>
+                        </div>
+                        <div onclick="sendMoneyTo('Софія')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition border border-white/20">
+                            <span class="text-[11px] text-gray-200 font-medium">Софія</span>
+                        </div>
+                        <div onclick="sendMoneyTo('Денис')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition border border-white/20">
+                            <span class="text-[11px] text-gray-200 font-medium">Денис</span>
+                        </div>
+                        <div onclick="sendMoneyTo('Аліна')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition border border-white/20">
+                            <span class="text-[11px] text-gray-200 font-medium">Аліна</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECENT TRANSACTIONS -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center px-1">
+                        <h3 class="text-sm font-bold text-gray-200 tracking-wide">Останні операції</h3>
+                        <i data-lucide="search" class="w-4 h-4 text-gray-400 cursor-pointer"></i>
+                    </div>
+
+                    <div class="space-y-2.5">
+                        <!-- Item 1 -->
+                        <div class="liquid-glass rounded-2xl p-3.5 flex items-center justify-between active:scale-[0.98] transition">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center">
+                                    <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-white">Steam Games</p>
+                                    <p class="text-[11px] text-gray-400">Сьогодні, 16:42 • Ігри</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-bold text-white">- ₴ 350.00</p>
+                                <p class="text-[10px] text-emerald-400">+₴ 17.50 кешбек</p>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div class="liquid-glass rounded-2xl p-3.5 flex items-center justify-between active:scale-[0.98] transition">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                                    <i data-lucide="arrow-down-left" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-white">Переказ від Мами</p>
+                                    <p class="text-[11px] text-gray-400">Сьогодні, 12:15 • Кишенькові</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-bold text-emerald-400">+ ₴ 1 000.00</p>
+                                <p class="text-[10px] text-gray-400">Поповнення</p>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div class="liquid-glass rounded-2xl p-3.5 flex items-center justify-between active:scale-[0.98] transition">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                                    <i data-lucide="coffee" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-white">Aroma Kava</p>
+                                    <p class="text-[11px] text-gray-400">Вчора, 18:20 • Кафе</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-sm font-bold text-white">- ₴ 85.00</p>
+                                <p class="text-[10px] text-emerald-400">+₴ 4.25 кешбек</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ================= TAB 2: ANALYTICS & STATS ================= -->
+            <div id="tab-analytics" class="tab-content hidden-tab space-y-5">
+                <div class="px-1">
+                    <h2 class="text-xl font-bold text-white">Аналітика витрат</h2>
+                    <p class="text-xs text-gray-400">Жовтень 2026 • Усього витрачено ₴ 3 420</p>
+                </div>
+
+                <!-- Interactive Chart Canvas Box -->
+                <div class="liquid-glass rounded-3xl p-4 space-y-3">
                     <div class="flex justify-between items-center text-xs">
-                        <span class="text-slate-300">Округлення здачі від покупок</span>
-                        <input type="checkbox" checked class="w-4 h-4 accent-emerald-500">
+                        <span class="text-gray-300 font-medium">Динаміка за тиждень</span>
+                        <span class="text-emerald-400 font-bold flex items-center gap-1">
+                            <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> -12% від минулого
+                        </span>
+                    </div>
+
+                    <!-- Fake Vector Glass Graph -->
+                    <div class="h-36 w-full relative flex items-end justify-between px-2 pt-4">
+                        <div class="w-8 bg-gradient-to-t from-emerald-500/20 to-emerald-400 rounded-t-lg h-[40%] relative group">
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100 transition">280₴</span>
+                        </div>
+                        <div class="w-8 bg-gradient-to-t from-emerald-500/20 to-emerald-400 rounded-t-lg h-[65%] relative group">
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100 transition">510₴</span>
+                        </div>
+                        <div class="w-8 bg-gradient-to-t from-emerald-500/20 to-emerald-400 rounded-t-lg h-[30%] relative group">
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100 transition">190₴</span>
+                        </div>
+                        <div class="w-8 bg-gradient-to-t from-emerald-500/20 to-emerald-400 rounded-t-lg h-[90%] relative group">
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100 transition">850₴</span>
+                        </div>
+                        <div class="w-8 bg-gradient-to-t from-emerald-500/20 to-emerald-400 rounded-t-lg h-[50%] relative group">
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100 transition">420₴</span>
+                        </div>
+                        <div class="w-8 bg-gradient-to-t from-emerald-500/20 to-emerald-400 rounded-t-lg h-[75%] relative group">
+                            <span class="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] text-white opacity-0 group-hover:opacity-100 transition">630₴</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-between text-[10px] text-gray-400 px-1 pt-1 border-t border-white/10">
+                        <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span>
+                    </div>
+                </div>
+
+                <!-- Expense Categories -->
+                <div class="space-y-3">
+                    <h3 class="text-sm font-bold text-gray-200 px-1">Категорії</h3>
+                    
+                    <div class="liquid-glass rounded-2xl p-3.5 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center">
+                                <i data-lucide="gamepad-2" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-white">Розваги та Ігри</p>
+                                <p class="text-[11px] text-gray-400">45% від усіх витрат</p>
+                            </div>
+                        </div>
+                        <span class="text-sm font-bold text-white">₴ 1 540</span>
+                    </div>
+
+                    <div class="liquid-glass rounded-2xl p-3.5 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
+                                <i data-lucide="utensils" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold text-white">Їжа та Кафе</p>
+                                <p class="text-[11px] text-gray-400">30% від усіх витрат</p>
+                            </div>
+                        </div>
+                        <span class="text-sm font-bold text-white">₴ 1 025</span>
                     </div>
                 </div>
             </div>
 
-            <!-- PAGE 3: CASHBACK & ANALYTICS -->
-            <div id="page-cashback" class="page-content hidden-page space-y-4">
-                <div class="glass-card-bg p-5 rounded-3xl flex justify-between items-center">
+            <!-- ================= TAB 3: SAVINGS / JARS ================= -->
+            <div id="tab-vault" class="tab-content hidden-tab space-y-5">
+                <div class="flex justify-between items-center px-1">
                     <div>
-                        <p class="text-xs text-slate-300">Накопичений кешбек</p>
-                        <p class="text-2xl font-black text-emerald-400 mt-1"><span id="cb-val">342.50</span> ₴</p>
+                        <h2 class="text-xl font-bold text-white">Скарбнички</h2>
+                        <p class="text-xs text-gray-400">Накопичуй на свої мрії з +7% річних</p>
                     </div>
-                    <button onclick="withdrawCashback()" class="px-4 py-2.5 rounded-xl glass-pill text-xs font-bold text-purple-300 border-purple-400/40 active:scale-95 transition">
-                        Вивести на баланс
+                    <button class="w-9 h-9 rounded-full bg-emerald-500 text-gray-950 flex items-center justify-center font-bold shadow-lg active:scale-90 transition">
+                        <i data-lucide="plus" class="w-5 h-5"></i>
                     </button>
                 </div>
 
-                <div class="space-y-2">
-                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1">Обрані категорії на цей місяць</span>
-                    <div class="grid grid-cols-2 gap-2.5">
-                        <div class="glass-panel p-3.5 rounded-2xl border-purple-500/30">
-                            <i class="fa-solid fa-gamepad text-purple-400 text-lg mb-1"></i>
-                            <p class="text-xs font-bold">Ігри та Steam</p>
-                            <p class="text-sm font-black text-emerald-400">5% кешбек</p>
+                <!-- Jar 1 -->
+                <div class="liquid-glass rounded-3xl p-5 space-y-4 relative overflow-hidden">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-2xl">
+                                🎧
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-white">AirPods Max</h3>
+                                <p class="text-xs text-gray-400">Зібрано ₴ 12 000 з 22 000</p>
+                            </div>
                         </div>
-                        <div class="glass-panel p-3.5 rounded-2xl border-amber-500/30">
-                            <i class="fa-solid fa-utensils text-amber-400 text-lg mb-1"></i>
-                            <p class="text-xs font-bold">Фастфуд & Кафе</p>
-                            <p class="text-sm font-black text-emerald-400">7% кешбек</p>
+                        <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/20">54%</span>
+                    </div>
+
+                    <!-- Progress bar -->
+                    <div class="w-full bg-gray-800/80 h-3 rounded-full overflow-hidden p-0.5 border border-white/10">
+                        <div class="bg-gradient-to-r from-indigo-500 to-emerald-400 h-full rounded-full w-[54%] transition-all duration-1000"></div>
+                    </div>
+
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="text-xs text-gray-400">+₴ 70.00 відсоток цього місяця</span>
+                        <button onclick="topUpJar('AirPods Max')" class="text-xs font-bold text-emerald-400 hover:text-emerald-300">Поповнити +</button>
+                    </div>
+                </div>
+
+                <!-- Jar 2 -->
+                <div class="liquid-glass rounded-3xl p-5 space-y-4 relative overflow-hidden">
+                    <div class="flex justify-between items-start">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center text-2xl">
+                                🚲
+                            </div>
+                            <div>
+                                <h3 class="text-base font-bold text-white">Новий Байк</h3>
+                                <p class="text-xs text-gray-400">Зібрано ₴ 4 500 з 15 000</p>
+                            </div>
                         </div>
+                        <span class="text-xs font-bold text-teal-400 bg-teal-500/10 px-2.5 py-1 rounded-full border border-teal-500/20">30%</span>
+                    </div>
+
+                    <div class="w-full bg-gray-800/80 h-3 rounded-full overflow-hidden p-0.5 border border-white/10">
+                        <div class="bg-gradient-to-r from-teal-500 to-emerald-400 h-full rounded-full w-[30%] transition-all duration-1000"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- PAGE 4: CUSTOMIZER & SETTINGS -->
-            <div id="page-customizer" class="page-content hidden-page space-y-4">
-                <div class="text-center">
-                    <h2 class="text-sm font-black">Студія Кастомізації TeenBank</h2>
-                    <p class="text-[10px] text-slate-400">Створіть свій унікальний стиль картки</p>
+            <!-- ================= TAB 4: SETTINGS / CUSTOMIZATION ================= -->
+            <div id="tab-settings" class="tab-content hidden-tab space-y-5">
+                <div class="px-1">
+                    <h2 class="text-xl font-bold text-white">Налаштування та Стиль</h2>
+                    <p class="text-xs text-gray-400">Кастомізуй свій TeenBank</p>
                 </div>
 
-                <div class="space-y-2">
-                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Теми і Градієнти</span>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="setSkin('skin-neon')" class="glass-panel p-2.5 rounded-2xl flex items-center gap-2 active:scale-95">
-                            <div class="w-4 h-4 rounded-full skin-neon"></div>
-                            <span class="text-xs font-semibold">Neon Mint</span>
-                        </button>
-                        <button onclick="setSkin('skin-glass')" class="glass-panel p-2.5 rounded-2xl flex items-center gap-2 active:scale-95">
-                            <div class="w-4 h-4 rounded-full skin-glass border border-white/40"></div>
-                            <span class="text-xs font-semibold">Cyber Glass</span>
-                        </button>
-                        <button onclick="setSkin('skin-sunset')" class="glass-panel p-2.5 rounded-2xl flex items-center gap-2 active:scale-95">
-                            <div class="w-4 h-4 rounded-full skin-sunset"></div>
-                            <span class="text-xs font-semibold">Sunset Glow</span>
-                        </button>
-                        <button onclick="setSkin('skin-gold')" class="glass-panel p-2.5 rounded-2xl flex items-center gap-2 active:scale-95">
-                            <div class="w-4 h-4 rounded-full skin-gold"></div>
-                            <span class="text-xs font-semibold">VIP Gold</span>
-                        </button>
+                <div class="liquid-glass rounded-3xl p-4 space-y-4">
+                    <h3 class="text-sm font-bold text-gray-200">Дизайн картки</h3>
+                    <div class="grid grid-cols-3 gap-3">
+                        <button onclick="setCardSkin('emerald')" class="h-16 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 border-2 border-emerald-400 flex items-center justify-center font-bold text-xs text-white shadow-lg">Неон</button>
+                        <button onclick="setCardSkin('purple')" class="h-16 rounded-xl bg-gradient-to-br from-purple-600 to-indigo-800 border border-white/20 flex items-center justify-center font-bold text-xs text-white shadow-lg">Кибер</button>
+                        <button onclick="setCardSkin('gold')" class="h-16 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 border border-white/20 flex items-center justify-center font-bold text-xs text-black shadow-lg">Золото</button>
                     </div>
                 </div>
 
                 <div class="space-y-2">
-                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Стікери</span>
-                    <div class="flex gap-2 flex-wrap">
-                        <button onclick="setSticker('⚡ TEEN VIP')" class="glass-pill px-3 py-1.5 rounded-xl text-[10px] font-bold text-amber-300">⚡ TEEN VIP</button>
-                        <button onclick="setSticker('🎮 GAMER PRO')" class="glass-pill px-3 py-1.5 rounded-xl text-[10px] font-bold text-purple-300">🎮 GAMER PRO</button>
-                        <button onclick="setSticker('🚀 TOP 1%')" class="glass-pill px-3 py-1.5 rounded-xl text-[10px] font-bold text-emerald-300">🚀 TOP 1%</button>
+                    <div class="liquid-glass rounded-2xl p-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400"></i>
+                            <span class="text-sm font-medium text-white">Батьківський контроль</span>
+                        </div>
+                        <span class="text-xs text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded-lg">Активний</span>
+                    </div>
+
+                    <div class="liquid-glass rounded-2xl p-4 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="smartphone" class="w-5 h-5 text-indigo-400"></i>
+                            <span class="text-sm font-medium text-white">Face ID / Touch ID</span>
+                        </div>
+                        <input type="checkbox" checked class="accent-emerald-400 w-5 h-5">
                     </div>
                 </div>
+            </div>
 
-                <div class="space-y-1">
-                    <label class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Ім'я на картці</label>
-                    <input type="text" value="ОЛЕКСАНДР ІВАНОВ" oninput="setName(this.value)" class="w-full glass-panel px-3.5 py-2.5 rounded-2xl text-xs text-white focus:outline-none uppercase font-bold">
+        </div>
+
+        <!-- ================= FLOATING LIQUID GLASS BOTTOM NAVBAR ================= -->
+        <nav class="absolute bottom-[env(safe-area-inset-bottom,12px)] left-4 right-4 h-16 rounded-full liquid-glass p-1.5 flex items-center justify-between z-50 shadow-2xl border border-white/20">
+            
+            <!-- Sliding Active Pill Highlight -->
+            <div id="nav-pill" class="nav-pill absolute h-13 w-1/4 bg-white/15 backdrop-blur-md rounded-full border border-white/25 shadow-inner top-1.5 left-1.5 pointer-events-none"></div>
+
+            <button onclick="switchTab('home', 0)" class="relative flex-1 h-full flex flex-col items-center justify-center text-emerald-400 z-10 transition">
+                <i data-lucide="home" class="w-5 h-5"></i>
+                <span class="text-[10px] font-bold mt-0.5">Головна</span>
+            </button>
+
+            <button onclick="switchTab('analytics', 1)" class="relative flex-1 h-full flex flex-col items-center justify-center text-gray-400 z-10 transition">
+                <i data-lucide="pie-chart" class="w-5 h-5"></i>
+                <span class="text-[10px] font-bold mt-0.5">Аналітика</span>
+            </button>
+
+            <button onclick="switchTab('vault', 2)" class="relative flex-1 h-full flex flex-col items-center justify-center text-gray-400 z-10 transition">
+                <i data-lucide="piggy-bank" class="w-5 h-5"></i>
+                <span class="text-[10px] font-bold mt-0.5">Скарбничка</span>
+            </button>
+
+            <button onclick="switchTab('settings', 3)" class="relative flex-1 h-full flex flex-col items-center justify-center text-gray-400 z-10 transition">
+                <i data-lucide="sliders" class="w-5 h-5"></i>
+                <span class="text-[10px] font-bold mt-0.5">Стиль</span>
+            </button>
+
+        </nav>
+
+        <!-- FACE ID SCAN MODAL -->
+        <div id="faceid-modal" class="faceid-modal fixed inset-0 bg-black/70 backdrop-blur-xl z-50 flex flex-col items-center justify-center opacity-0 pointer-events-none">
+            <div class="relative flex items-center justify-center mb-6">
+                <div class="w-24 h-24 rounded-3xl border-2 border-emerald-400/40 flex items-center justify-center animate-pulse">
+                    <i data-lucide="scan-face" class="w-14 h-14 text-emerald-400"></i>
                 </div>
             </div>
-
-        </div>
-
-        <!-- FLUID LIQUID GLASS NAVIGATION BAR WITH SLIDING PILL -->
-        <div class="px-5 pb-[calc(env(safe-area-inset-bottom,16px)+10px)] z-40">
-            <div class="liquid-nav-container relative rounded-full p-1.5 flex justify-between items-center">
-                <div id="sliding-pill" class="liquid-sliding-pill"></div>
-
-                <button onclick="switchTab('home', 0)" id="tab-btn-0" class="relative z-10 w-1/4 py-2 flex flex-col items-center gap-0.5 text-purple-300 transition-colors duration-300">
-                    <i class="fa-solid fa-house text-sm"></i>
-                    <span class="text-[9px] font-black tracking-tight">Головна</span>
-                </button>
-
-                <button onclick="switchTab('jar', 1)" id="tab-btn-1" class="relative z-10 w-1/4 py-2 flex flex-col items-center gap-0.5 text-slate-400 transition-colors duration-300">
-                    <i class="fa-solid fa-piggy-bank text-sm"></i>
-                    <span class="text-[9px] font-black tracking-tight">Скарбниця</span>
-                </button>
-
-                <button onclick="switchTab('cashback', 2)" id="tab-btn-2" class="relative z-10 w-1/4 py-2 flex flex-col items-center gap-0.5 text-slate-400 transition-colors duration-300">
-                    <i class="fa-solid fa-gift text-sm"></i>
-                    <span class="text-[9px] font-black tracking-tight">Кешбек</span>
-                </button>
-
-                <button onclick="switchTab('customizer', 3)" id="tab-btn-3" class="relative z-10 w-1/4 py-2 flex flex-col items-center gap-0.5 text-slate-400 transition-colors duration-300">
-                    <i class="fa-solid fa-palette text-sm"></i>
-                    <span class="text-[9px] font-black tracking-tight">Дизайн</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- FACE ID BIOMETRIC AUTH MODAL -->
-        <div id="faceid-modal" class="absolute inset-0 bg-black/90 backdrop-blur-xl hidden z-50 flex flex-col items-center justify-center space-y-4">
-            <div class="relative w-24 h-24 rounded-3xl glass-panel border-emerald-400/50 flex items-center justify-center text-4xl text-emerald-400">
-                <i class="fa-solid fa-face-smile"></i>
-                <div class="face-id-laser"></div>
-            </div>
-            <p class="text-xs font-bold text-white">Сканування Face ID...</p>
-            <p class="text-[10px] text-slate-400">Підтвердження безпечного платежу</p>
-        </div>
-
-        <!-- GENERAL MODAL -->
-        <div id="app-modal" class="absolute inset-0 bg-black/80 backdrop-blur-md hidden z-50 flex items-end justify-center">
-            <div class="glass-panel w-full rounded-t-[32px] p-5 pb-8 space-y-3">
-                <div class="flex justify-between items-center">
-                    <h3 id="modal-heading" class="font-bold text-xs text-white">Операція</h3>
-                    <button onclick="closeModal()" class="w-6 h-6 rounded-full glass-pill flex items-center justify-center text-xs">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-                <div id="modal-content-area" class="space-y-3">
-                    <input type="number" id="modal-input-amount" placeholder="Сума (грн)" class="w-full glass-panel px-4 py-3 rounded-2xl text-sm font-bold text-emerald-400 focus:outline-none">
-                </div>
-                <button onclick="submitModalAction()" class="w-full py-3 rounded-2xl bg-gradient-to-r from-purple-600 to-emerald-500 font-extrabold text-xs shadow-lg active:scale-95 transition">
-                    Підтвердити
-                </button>
-            </div>
-        </div>
-
-        <!-- TOAST NOTIFICATION -->
-        <div id="toast" class="absolute top-12 left-4 right-4 glass-panel p-3 rounded-2xl border-emerald-400/40 flex items-center gap-3 -translate-y-28 transition-all duration-300 z-50">
-            <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
-            <div>
-                <p id="toast-title-txt" class="text-xs font-bold">Успішно</p>
-                <p id="toast-desc-txt" class="text-[9px] text-slate-300">Дію виконано.</p>
-            </div>
+            <p class="text-white font-bold text-lg">Face ID</p>
+            <p class="text-gray-400 text-xs mt-1">Сканування обличчя...</p>
         </div>
 
     </div>
 
-    <!-- JAVASCRIPT ENGINE -->
+    <!-- SCRIPTS FOR INTERACTIVITY -->
     <script>
-        let balanceUAH = 2450.00;
-        let currentCurrency = 'UAH';
-        const rates = { UAH: 1, USD: 0.024, EUR: 0.022 };
-        const symbols = { UAH: '₴', USD: '$', EUR: '€' };
+        // Initialize Lucide Icons
+        lucide.createIcons();
 
-        let jarVal = 7350.00;
-        let cashbackVal = 342.50;
-        let activeModal = '';
-
-        // LIVE TIME UPDATE
-        function updateLiveTime() {
-            const now = new Date();
-            const hrs = String(now.getHours()).padStart(2, '0');
-            const mins = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('live-time').innerText = `${hrs}:${mins}`;
-        }
-        setInterval(updateLiveTime, 1000);
-        updateLiveTime();
-
-        // CHART SETUP
-        window.addEventListener('load', () => {
-            const ctx = document.getElementById('miniChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'],
-                    datasets: [{
-                        data: [1800, 2100, 1950, 2300, 2150, 2400, 2450],
-                        borderColor: '#10b981',
-                        borderWidth: 2.5,
-                        tension: 0.4,
-                        pointRadius: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { x: { display: false }, y: { display: false } }
-                }
-            });
-        });
-
-        // CURRENCY TOGGLE
-        function setCurrency(curr) {
-            currentCurrency = curr;
-            ['uah', 'usd', 'eur'].forEach(c => {
-                const btn = document.getElementById(`curr-${c}`);
-                if (c === curr.toLowerCase()) {
-                    btn.className = "px-2 py-0.5 rounded text-[9px] font-bold bg-emerald-500 text-black";
-                } else {
-                    btn.className = "px-2 py-0.5 rounded text-[9px] font-bold text-white/60";
-                }
-            });
-
-            const converted = balanceUAH * rates[curr];
-            document.getElementById('user-balance').innerText = converted.toLocaleString('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            document.getElementById('curr-symbol').innerText = symbols[curr];
-        }
-
-        // ANIMATED LIQUID TAB SWITCHING WITH SLIDING PILL
-        function switchTab(pageId, index) {
-            const pill = document.getElementById('sliding-pill');
-            pill.style.transform = `translateX(${index * 100}%)`;
-
-            for (let i = 0; i < 4; i++) {
-                const btn = document.getElementById(`tab-btn-${i}`);
-                if (i === index) {
-                    btn.classList.replace('text-slate-400', 'text-purple-300');
-                } else {
-                    btn.classList.replace('text-purple-300', 'text-slate-400');
-                }
-            }
-
-            ['home', 'jar', 'cashback', 'customizer'].forEach(p => {
-                const pageEl = document.getElementById(`page-${p}`);
-                if (p === pageId) {
-                    pageEl.classList.remove('hidden-page');
-                } else {
-                    pageEl.classList.add('hidden-page');
-                }
-            });
-        }
-
-        // 3D TOUCH CARD PHYSICS
-        const touchArea = document.getElementById('card-touch-area');
-        const card = document.getElementById('interactive-bank-card');
-        let flipped = false;
-
-        function handleMove(e) {
-            if (flipped) return;
-            const rect = touchArea.getBoundingClientRect();
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        // Dynamic Tab Switching with Sliding Glass Pill
+        function switchTab(tabName, index) {
+            const tabs = ['home', 'analytics', 'vault', 'settings'];
             
-            const x = clientX - rect.left - (rect.width / 2);
-            const y = clientY - rect.top - (rect.height / 2);
-            
-            const rotX = (y / (rect.height / 2)) * -18;
-            const rotY = (x / (rect.width / 2)) * 18;
-            card.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                if (t === tabName) {
+                    el.classList.remove('hidden-tab');
+                } else {
+                    el.classList.add('hidden-tab');
+                }
+            });
+
+            // Move Navigation Glass Pill
+            const pill = document.getElementById('nav-pill');
+            pill.style.left = `calc(${index * 25}% + 6px)`;
+
+            // Highlight Active Button Text & Icon
+            const buttons = document.querySelectorAll('nav button');
+            buttons.forEach((btn, idx) => {
+                if (idx === index) {
+                    btn.classList.add('text-emerald-400');
+                    btn.classList.remove('text-gray-400');
+                } else {
+                    btn.classList.remove('text-emerald-400');
+                    btn.classList.add('text-gray-400');
+                }
+            });
         }
 
-        function resetCard() {
-            if (flipped) return;
-            card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+        // Card Flip Animation
+        let isFlipped = false;
+        function flipCard(e) {
+            e.stopPropagation();
+            const card = document.getElementById('bank-card');
+            isFlipped = !isFlipped;
+            card.style.transform = isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)';
         }
 
-        touchArea.addEventListener('mousemove', handleMove);
-        touchArea.addEventListener('mouseleave', resetCard);
-        touchArea.addEventListener('touchmove', handleMove);
-        touchArea.addEventListener('touchend', resetCard);
-
-        card.addEventListener('click', () => {
-            flipped = !flipped;
-            card.classList.toggle('is-flipped');
-            if (flipped) card.style.transform = 'rotateY(180deg)';
-            else card.style.transform = 'rotateX(0deg) rotateY(0deg)';
-        });
-
-        // CUSTOMIZER ACTIONS
-        function setSkin(skin) {
-            card.className = `bank-card ${skin}`;
-            triggerToast("Дизайн оновлено", "Новий стиль застосовано.");
-        }
-        function setSticker(txt) {
-            document.getElementById('card-sticker').innerText = txt;
-            triggerToast("Стікер додано", txt);
-        }
-        function setName(val) {
-            document.getElementById('card-name-display').innerText = val.trim().toUpperCase() || "ОЛЕКСАНДР ІВАНОВ";
-        }
-
-        // FACE ID SIMULATION
-        function triggerApplePaySim() {
-            const faceid = document.getElementById('faceid-modal');
-            faceid.classList.remove('hidden');
+        // Face ID Simulation
+        function triggerFaceID() {
+            const modal = document.getElementById('faceid-modal');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
             setTimeout(() => {
-                faceid.classList.add('hidden');
-                triggerToast("Apple Pay Готовий", "Піднесіть телефон до терміналу.");
+                modal.classList.add('opacity-0', 'pointer-events-none');
             }, 1800);
         }
 
-        // QUICK TRANSFERS
-        function quickTransfer(name, phone) {
-            openModal('transfer');
-            document.getElementById('modal-heading').innerText = `Переказ для ${name}`;
+        // Quick Actions & Alerts
+        function quickAction(action) {
+            if (action === 'send') alert('Введіть номер картки або оберіть друга для переказу.');
+            if (action === 'topup') alert('Поповнення картки через Apple Pay або термінал 0%.');
+            if (action === 'jar') switchTab('vault', 2);
+            if (action === 'more') alert('Більше послуг: Кешбек, Кредитний ліміт, Курси валют.');
         }
 
-        // MODAL HANDLERS
-        function openModal(type) {
-            activeModal = type;
-            const heading = document.getElementById('modal-heading');
-            if (type === 'transfer') heading.innerText = 'Переказ коштів';
-            else if (type === 'topup') heading.innerText = 'Поповнення картки';
-            else if (type === 'iban') heading.innerText = 'Реквізити UA90305299000002600123456';
-            else if (type === 'jar-deposit') heading.innerText = 'Поповнити скарбничку';
-
-            document.getElementById('app-modal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('app-modal').classList.add('hidden');
-        }
-
-        function submitModalAction() {
-            const input = document.getElementById('modal-input-amount');
-            const amt = parseFloat(input.value);
-            
-            if (isNaN(amt) || amt <= 0) return closeModal();
-
-            if (activeModal === 'transfer' && amt <= balanceUAH) {
-                balanceUAH -= amt;
-                addTxRow(`Переказ коштів`, `-${amt.toFixed(2)} ₴`);
-                triggerToast("Переказ успішний", `${amt} ₴ надіслано!`);
-            } else if (activeModal === 'topup') {
-                balanceUAH += amt;
-                addTxRow(`Поповнення картки`, `+${amt.toFixed(2)} ₴`, true);
-                triggerToast("Рахунок поповнено", `Зараховано ${amt} ₴`);
-            } else if (activeModal === 'jar-deposit' && amt <= balanceUAH) {
-                balanceUAH -= amt;
-                jarVal += amt;
-                document.getElementById('jar-val').innerText = `${jarVal.toFixed(2)} ₴`;
-                triggerToast("Скарбничка", `Додано ${amt} ₴`);
+        function sendMoneyTo(name) {
+            const amount = prompt(`Скільки переказати для ${name}? (грн)`);
+            if (amount) {
+                alert(`Успішно переказано ₴${amount} для ${name}!`);
             }
-
-            setCurrency(currentCurrency);
-            input.value = '';
-            closeModal();
         }
 
-        function addTxRow(title, amountStr, isIncome = false) {
-            const list = document.getElementById('tx-list');
-            const row = document.createElement('div');
-            row.className = "glass-panel p-3 rounded-2xl flex justify-between items-center";
-            row.innerHTML = `
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-xl ${isIncome ? 'bg-emerald-500/20 text-emerald-300' : 'bg-purple-500/20 text-purple-300'} flex items-center justify-center text-xs">
-                        <i class="fa-solid ${isIncome ? 'fa-arrow-down-left' : 'fa-paper-plane'}"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold">${title}</p>
-                        <p class="text-[9px] text-slate-400">Тільки що</p>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <p class="text-xs font-bold ${isIncome ? 'text-emerald-400' : 'text-white'}">${amountStr}</p>
-                    <span class="text-[8px] text-emerald-400 font-bold">+10 ₴ кешбек</span>
-                </div>
-            `;
-            list.prepend(row);
+        function topUpJar(name) {
+            const amount = prompt(`Поповнити скарбничку "${name}" на суму:`);
+            if (amount) {
+                alert(`Додано ₴${amount} до вашої скарбнички!`);
+            }
         }
 
-        function clearTransactions() {
-            document.getElementById('tx-list').innerHTML = `<p class="text-center text-[10px] text-slate-500 py-3">Історія порожня</p>`;
-        }
-
-        function withdrawCashback() {
-            if (cashbackVal <= 0) return;
-            balanceUAH += cashbackVal;
-            triggerToast("Кешбек виведено", `${cashbackVal.toFixed(2)} ₴ додано!`);
-            cashbackVal = 0;
-            document.getElementById('cb-val').innerText = "0.00";
-            setCurrency(currentCurrency);
-        }
-
-        function triggerToast(title, desc) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-title-txt').innerText = title;
-            document.getElementById('toast-desc-txt').innerText = desc;
-            toast.classList.remove('-translate-y-28');
-            setTimeout(() => toast.classList.add('-translate-y-28'), 3200);
+        function setCardSkin(skin) {
+            const card = document.getElementById('bank-card');
+            if (skin === 'emerald') {
+                card.className = "card-3d-inner relative w-full h-52 rounded-3xl p-6 flex flex-col justify-between liquid-glass-card glass-shimmer overflow-hidden shadow-2xl cursor-pointer";
+            } else if (skin === 'purple') {
+                card.className = "card-3d-inner relative w-full h-52 rounded-3xl p-6 flex flex-col justify-between bg-gradient-to-br from-purple-900/80 to-indigo-900/80 backdrop-blur-2xl border border-purple-400/30 shadow-2xl cursor-pointer";
+            } else if (skin === 'gold') {
+                card.className = "card-3d-inner relative w-full h-52 rounded-3xl p-6 flex flex-col justify-between bg-gradient-to-br from-amber-500/80 to-yellow-700/80 backdrop-blur-2xl border border-yellow-300/40 shadow-2xl cursor-pointer text-gray-950";
+            }
         }
     </script>
 </body>
