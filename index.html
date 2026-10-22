@@ -1135,18 +1135,37 @@
       if (enteredPin.length === 4) setTimeout(validatePin, 180);
     }
 
-    function triggerFaceID() {
+    async function triggerFaceID() {
       if (biometricLock) return;
       biometricLock = true;
       faceModal.classList.remove('opacity-0', 'pointer-events-none');
       faceModal.classList.add('opacity-100');
       showToast('Face ID активовано');
 
+      if (window.PublicKeyCredential) {
+        try {
+          const challenge = new Uint8Array(32);
+          window.crypto.getRandomValues(challenge);
+          await navigator.credentials.create({
+            publicKey: {
+              challenge: challenge,
+              rp: { name: "Auralis Bank" },
+              user: { id: new Uint8Array(16), name: "alex@auralis.app", displayName: "Alex" },
+              pubKeyCredParams: [{ alg: -7, type: "public-key" }],
+              authenticatorSelection: { authenticatorAttachment: "platform" },
+              timeout: 15000
+            }
+          });
+        } catch (e) {
+          // Fallback simulation
+        }
+      }
+
       setTimeout(() => {
         faceModal.classList.add('opacity-0', 'pointer-events-none');
         faceModal.classList.remove('opacity-100');
         unlockApp();
-      }, 1200);
+      }, 600);
     }
 
     document.querySelectorAll('.digit').forEach(button => {
@@ -1167,7 +1186,7 @@
 
     function installApp() {
       if (!deferredPrompt) {
-        showToast('PWA вже встановлено');
+        showToast('PWA вже встановлено або відкрите у додатку');
         return;
       }
       deferredPrompt.prompt();
