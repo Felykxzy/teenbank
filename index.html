@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="uk" class="h-full">
+<html lang="uk" class="h-full select-none">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#020617" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="TeenBank" />
+  <meta name="apple-mobile-web-app-title" content="Auralis" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="format-detection" content="telephone=no" />
-  <title>TeenBank — iOS Liquid Glass</title>
+  <title>Auralis — iOS Liquid Glass</title>
   <link rel="icon" type="image/svg+xml" href="./assets/teenbank-app-icon.svg" />
   <link rel="apple-touch-icon" href="./assets/teenbank-app-icon.svg" />
   <link rel="manifest" href="./manifest.webmanifest" />
@@ -21,14 +21,15 @@
 
   <style>
     :root {
-      --bg-0: #020617;
-      --bg-1: #07111d;
+      --bg-deep: #020617;
+      --bg-1: #091525;
       --bg-2: #0f172a;
       --glass: rgba(255,255,255,0.08);
       --glass-2: rgba(255,255,255,0.12);
       --glass-3: rgba(255,255,255,0.18);
+      --glass-strong: rgba(255,255,255,0.22);
       --line: rgba(255,255,255,0.14);
-      --white: #f8fafc;
+      --text: #f8fafc;
       --muted: #94a3b8;
       --emerald: #34d399;
       --emerald-soft: #6ee7b7;
@@ -36,10 +37,9 @@
       --indigo: #8b5cf6;
       --violet: #a78bfa;
       --amber: #fbbf24;
-      --shadow: rgba(2,6,23,0.8);
-      --text: #f1f5f9;
-      --card: rgba(15, 23, 42, 0.56);
-      --lock-window: rgba(3, 7, 18, 0.8);
+      --shadow: rgba(2,6,23,0.75);
+      --card-glow: rgba(52,211,153,0.35);
+      --brand-grad: linear-gradient(135deg, rgba(52,211,153,0.28), rgba(52,211,153,0.12), rgba(139,92,246,0.2));
     }
 
     * {
@@ -54,17 +54,18 @@
       width: 100%;
       height: 100%;
       background:
-        radial-gradient(circle at 15% 10%, rgba(52,211,153,0.17), transparent 25%),
-        radial-gradient(circle at 85% 70%, rgba(168,85,247,0.22), transparent 30%),
+        radial-gradient(circle at 12% 10%, rgba(52,211,153,0.18), transparent 20%),
+        radial-gradient(circle at 85% 75%, rgba(139,92,246,0.2), transparent 25%),
         linear-gradient(180deg, #020617 0%, #030712 100%);
-      color: var(--white);
+      color: var(--text);
       overscroll-behavior: none;
       user-select: none;
+      overflow: hidden;
     }
 
     body {
-      overflow: hidden;
       position: relative;
+      min-height: 100dvh;
     }
 
     button, input {
@@ -79,21 +80,20 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      background: radial-gradient(circle at 30% 10%, rgba(52,211,153,0.2), transparent 18%), radial-gradient(circle at 80% 80%, rgba(168,85,247,0.18), transparent 22%), #020617;
-      transition: opacity 0.5s ease, filter 0.5s ease;
+      background: radial-gradient(circle at 30% 10%, rgba(52,211,153,0.18), transparent 16%), radial-gradient(circle at 80% 80%, rgba(168,85,247,0.18), transparent 22%), #020617;
+      transition: opacity 0.35s ease, filter 0.35s ease;
     }
 
     .iphone-frame {
+      position: relative;
       width: min(100%, 430px);
       height: 100dvh;
-      max-height: 100dvh;
-      position: relative;
-      border-radius: 0;
       background: rgba(2,6,23,0.7);
-      border: 1px solid rgba(148,163,184,0.15);
+      border: 1px solid rgba(148,163,184,0.12);
       overflow: hidden;
-      backdrop-filter: blur(16px) saturate(135%);
-      -webkit-backdrop-filter: blur(16px) saturate(135%);
+      backdrop-filter: blur(18px) saturate(150%);
+      -webkit-backdrop-filter: blur(18px) saturate(150%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 30px 60px rgba(2,6,23,0.7);
     }
 
     .ambient-glow {
@@ -106,20 +106,16 @@
     }
 
     @keyframes pulseGlow {
-      0% { transform: scale(1) translate(0,0); opacity: 0.35; }
-      50% { transform: scale(1.18) translate(18px,-18px); opacity: 0.55; }
-      100% { transform: scale(0.96) translate(-12px,16px); opacity: 0.38; }
+      0% { transform: scale(1) translate(0,0); opacity: 0.32; }
+      50% { transform: scale(1.18) translate(18px, -14px); opacity: 0.54; }
+      100% { transform: scale(0.95) translate(-12px, 14px); opacity: 0.38; }
     }
 
     .liquid-glass {
       position: relative;
       background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
-      border: 1px solid rgba(255,255,255,0.15);
-      box-shadow:
-        inset 0 1px 1px rgba(255,255,255,0.18),
-        inset 0 -1px 1px rgba(255,255,255,0.04),
-        0 18px 32px rgba(2,6,23,0.45),
-        0 2px 15px rgba(15,23,42,0.28);
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.18), inset 0 -1px 1px rgba(255,255,255,0.04), 0 18px 32px rgba(2,6,23,0.45), 0 2px 15px rgba(15,23,42,0.28);
       backdrop-filter: blur(28px) saturate(170%);
       -webkit-backdrop-filter: blur(28px) saturate(170%);
       overflow: hidden;
@@ -130,24 +126,24 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.18) 33%, transparent 58%);
-      transform: translateX(-120%) rotate(18deg);
-      animation: glassSweep 9s ease-in-out infinite;
+      background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.18) 34%, transparent 60%);
+      transform: translateX(-120%) rotate(16deg);
+      animation: glassSweep 11s ease-in-out infinite;
       pointer-events: none;
+    }
+
+    @keyframes glassSweep {
+      0% { transform: translateX(-130%) rotate(16deg); }
+      18%, 100% { transform: translateX(120%) rotate(16deg); }
     }
 
     .glass-card {
       position: relative;
-      background: linear-gradient(135deg, rgba(255,255,255,0.17), rgba(255,255,255,0.04));
-      border: 1px solid rgba(255,255,255,0.21);
+      background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04));
+      border: 1px solid rgba(255,255,255,0.18);
       box-shadow: 0 30px 70px rgba(15,23,42,0.58), inset 0 1px 1px rgba(255,255,255,0.32);
       backdrop-filter: blur(36px) saturate(220%);
       -webkit-backdrop-filter: blur(36px) saturate(220%);
-    }
-
-    @keyframes glassSweep {
-      0% { transform: translateX(-120%) rotate(18deg); }
-      20%, 100% { transform: translateX(120%) rotate(18deg); }
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -176,12 +172,12 @@
 
     .card-3d-inner {
       transform-style: preserve-3d;
-      transition: transform 0.7s cubic-bezier(.23,1,.32,1), box-shadow 0.4s ease;
+      transition: transform 0.7s cubic-bezier(.23,1,.32,1), box-shadow 0.35s ease;
       will-change: transform;
     }
 
     .card-3d-inner:hover {
-      box-shadow: 0 32px 75px rgba(17,24,39,0.6), inset 0 1px 1px rgba(255,255,255,0.35);
+      box-shadow: 0 32px 80px rgba(17,24,39,0.68), inset 0 1px 1px rgba(255,255,255,0.34);
     }
 
     .faceid-modal {
@@ -206,7 +202,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(circle at top, rgba(52,211,153,0.16), transparent 22%), linear-gradient(180deg, rgba(2,6,23,0.94) 0%, rgba(2,6,23,0.96) 100%);
+      background: radial-gradient(circle at top, rgba(52,211,153,0.15), transparent 22%), linear-gradient(180deg, rgba(2,6,23,0.94) 0%, rgba(2,6,23,0.96) 100%);
       transition: opacity 0.45s ease, visibility 0.45s ease;
     }
 
@@ -236,8 +232,8 @@
       align-items: center;
       font-size: 12px;
       font-weight: 700;
-      color: rgba(255,255,255,0.9);
       letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.92);
       padding-top: 2px;
     }
 
@@ -269,7 +265,7 @@
       background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
       border: 1px solid rgba(110,231,183,0.42);
       box-shadow: 0 0 30px rgba(52,211,153,0.2), inset 0 0 18px rgba(255,255,255,0.08);
-      animation: pulseRing 2.4s ease-in-out infinite;
+      animation: pulseRing 2.5s ease-in-out infinite;
     }
 
     .face-id-ring::before {
@@ -318,10 +314,8 @@
       box-shadow: inset 0 1px 1px rgba(255,255,255,0.16);
     }
 
-    .passcode-btn {
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.9);
-      border: 1px solid rgba(255,255,255,0.08);
+    .face-btn:active, .passcode-btn:active {
+      transform: scale(0.98);
     }
 
     .passcode-wrap {
@@ -337,14 +331,13 @@
       gap: 12px;
       justify-content: center;
       align-items: center;
-      margin-top: 4px;
     }
 
     .passcode-dot {
       width: 13px;
       height: 13px;
       border-radius: 999px;
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.18);
       border: 1px solid rgba(255,255,255,0.12);
       transition: all 0.2s ease;
     }
@@ -352,16 +345,16 @@
     .passcode-dot.active {
       background: linear-gradient(135deg, rgba(110,231,183,1), rgba(52,211,153,1));
       box-shadow: 0 0 20px rgba(52,211,153,0.4);
-      transform: scale(1.1);
+      transform: scale(1.08);
     }
 
     .passcode-pad {
       width: 100%;
       max-width: 290px;
-      margin-top: 8px;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
+      margin-top: 8px;
     }
 
     .digit {
@@ -384,13 +377,8 @@
       background: rgba(255,255,255,0.12);
     }
 
-    .digit.zero {
-      font-size: 1.4rem;
-    }
-
-    .digit-icon {
-      font-size: 1.15rem;
-    }
+    .digit.zero { font-size: 1.4rem; }
+    .digit-icon { font-size: 1.15rem; }
 
     .lock-footer {
       display: flex;
@@ -405,17 +393,11 @@
     }
 
     .lock-footer span:last-child {
-      opacity: 0.7;
-    }
-
-    .hidden-ui {
-      display: none !important;
+      opacity: 0.75;
     }
 
     @media (max-width: 420px) {
-      .lock-title {
-        font-size: 1.95rem;
-      }
+      .lock-title { font-size: 1.95rem; }
     }
   </style>
 </head>
@@ -437,7 +419,7 @@
         </div>
 
         <div>
-          <h1 class="lock-title">TeenBank</h1>
+          <h1 class="lock-title">Auralis</h1>
           <div class="lock-subtext">Face ID / Unlock</div>
         </div>
 
@@ -485,12 +467,12 @@
         <header class="flex items-center justify-between py-3 mb-2 shrink-0">
           <div class="flex items-center space-x-3">
             <div class="relative shrink-0">
-              <img id="user-avatar" src="./assets/teenbank-avatar.svg" alt="TeenBank avatar" class="w-11 h-11 rounded-full object-cover border-2 border-emerald-400/80 shadow-lg ring-2 ring-emerald-400/15" />
+              <img id="user-avatar" src="./assets/teenbank-avatar.svg" alt="Auralis avatar" class="w-11 h-11 rounded-full object-cover border-2 border-emerald-400/80 shadow-lg ring-2 ring-emerald-400/15" />
               <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-400 border-2 border-slate-950 rounded-full"></div>
             </div>
             <div>
               <div class="flex items-center gap-1.5">
-                <span class="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-300">Teen VIP</span>
+                <span class="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-300">Auralis VIP</span>
                 <i data-lucide="sparkles" class="w-3 h-3 text-emerald-300"></i>
               </div>
               <h1 class="text-base font-bold text-white tracking-tight">Привіт, Алекс!</h1>
@@ -513,7 +495,7 @@
         </header>
 
         <div class="flex-1 relative overflow-y-auto no-scrollbar pb-28">
-          <div id="tab-home" class="tab-content space-y-5">
+          <section id="tab-home" class="tab-content space-y-5">
             <div class="card-3d-wrapper py-1">
               <div id="bank-card" class="card-3d-inner relative w-full h-56 rounded-[2rem] p-5 flex flex-col justify-between glass-card overflow-hidden shadow-[0_30px_80px_rgba(15,23,42,0.7)] cursor-pointer">
                 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/25 rounded-full blur-3xl"></div>
@@ -522,7 +504,7 @@
 
                 <div class="flex justify-between items-start z-10">
                   <div>
-                    <p class="text-[10px] uppercase tracking-[0.28em] text-emerald-200/90 font-bold">TeenBank Platinum</p>
+                    <p class="text-[10px] uppercase tracking-[0.28em] text-emerald-200/90 font-bold">Auralis Platinum</p>
                     <p class="text-[2rem] font-extrabold text-white mt-1 tracking-tight leading-none">₴ 14 850<span class="text-emerald-300 text-xl">.50</span></p>
                   </div>
                   <div class="flex items-center gap-2">
@@ -537,7 +519,7 @@
                   </div>
                   <button onclick="flipCard(event)" class="text-[10px] bg-white/8 hover:bg-white/12 active:scale-95 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 text-white flex items-center gap-1.5">
                     <i data-lucide="rotate-cw" class="w-3 h-3"></i>
-                    <span>CVV / Реквізити</span>
+                    <span>CVV / Деталі</span>
                   </button>
                 </div>
 
@@ -559,7 +541,7 @@
                 <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-emerald-300 shadow-lg">
                   <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
                 </div>
-                <span class="text-[11px] text-slate-300 font-medium">Переказати</span>
+                <span class="text-[11px] text-slate-300 font-medium">Переказ</span>
               </button>
               <button onclick="quickAction('topup')" class="group flex flex-col items-center gap-2">
                 <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-teal-300 shadow-lg">
@@ -571,7 +553,7 @@
                 <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-indigo-300 shadow-lg">
                   <i data-lucide="piggy-bank" class="w-6 h-6"></i>
                 </div>
-                <span class="text-[11px] text-slate-300 font-medium">Скарбничка</span>
+                <span class="text-[11px] text-slate-300 font-medium">Скарб</span>
               </button>
               <button onclick="quickAction('more')" class="group flex flex-col items-center gap-2">
                 <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-violet-300 shadow-lg">
@@ -583,7 +565,7 @@
 
             <div class="space-y-3">
               <div class="flex justify-between items-center px-1">
-                <h3 class="text-sm font-bold text-slate-200 tracking-wide">Швидкий переказ друзям</h3>
+                <h3 class="text-sm font-bold text-slate-200 tracking-wide">Швидкі контакти</h3>
                 <span class="text-[11px] text-emerald-300 font-semibold cursor-pointer">Всі (12)</span>
               </div>
               <div class="flex space-x-3 overflow-x-auto no-scrollbar py-1">
@@ -668,9 +650,9 @@
                 </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          <div id="tab-analytics" class="tab-content hidden-tab space-y-5">
+          <section id="tab-analytics" class="tab-content hidden-tab space-y-5">
             <div class="px-1">
               <h2 class="text-xl font-bold text-white">Аналітика витрат</h2>
               <p class="text-xs text-slate-400">Жовтень 2026 • Усього витрачено ₴ 3 420</p>
@@ -718,7 +700,7 @@
                     <i data-lucide="gamepad-2" class="w-5 h-5"></i>
                   </div>
                   <div>
-                    <p class="text-sm font-bold text-white">Розваги та Ігри</p>
+                    <p class="text-sm font-bold text-white">Розваги</p>
                     <p class="text-[11px] text-slate-400">45% від усіх витрат</p>
                   </div>
                 </div>
@@ -731,16 +713,16 @@
                     <i data-lucide="utensils" class="w-5 h-5"></i>
                   </div>
                   <div>
-                    <p class="text-sm font-bold text-white">Їжа та Кафе</p>
+                    <p class="text-sm font-bold text-white">Їжа та кафе</p>
                     <p class="text-[11px] text-slate-400">30% від усіх витрат</p>
                   </div>
                 </div>
                 <span class="text-sm font-bold text-white">₴ 1 025</span>
               </div>
             </div>
-          </div>
+          </section>
 
-          <div id="tab-vault" class="tab-content hidden-tab space-y-5">
+          <section id="tab-vault" class="tab-content hidden-tab space-y-5">
             <div class="flex justify-between items-center px-1">
               <div>
                 <h2 class="text-xl font-bold text-white">Скарбнички</h2>
@@ -778,7 +760,7 @@
                 <div class="flex items-center space-x-3">
                   <div class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-2xl">🚲</div>
                   <div>
-                    <h3 class="text-base font-bold text-white">Новий Байк</h3>
+                    <h3 class="text-base font-bold text-white">Новий байк</h3>
                     <p class="text-xs text-slate-400">Зібрано ₴ 4 500 з 15 000</p>
                   </div>
                 </div>
@@ -789,12 +771,12 @@
                 <div class="bg-gradient-to-r from-teal-500 to-emerald-400 h-full rounded-full w-[30%] transition-all duration-1000"></div>
               </div>
             </div>
-          </div>
+          </section>
 
-          <div id="tab-settings" class="tab-content hidden-tab space-y-5">
+          <section id="tab-settings" class="tab-content hidden-tab space-y-5">
             <div class="px-1">
-              <h2 class="text-xl font-bold text-white">Налаштування та Стиль</h2>
-              <p class="text-xs text-slate-400">Кастомізуй свій TeenBank</p>
+              <h2 class="text-xl font-bold text-white">Налаштування шаблону</h2>
+              <p class="text-xs text-slate-400">Кастомізуй стиль Auralis</p>
             </div>
 
             <div class="liquid-glass rounded-3xl p-4 space-y-4">
@@ -844,7 +826,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </section>
         </div>
 
         <nav class="absolute bottom-[env(safe-area-inset-bottom,12px)] left-4 right-4 h-16 rounded-full liquid-glass p-1.5 flex items-center justify-between z-50 shadow-2xl border border-white/15">
@@ -862,7 +844,7 @@
 
           <button onclick="switchTab('vault', 2)" class="relative flex-1 h-full flex flex-col items-center justify-center text-slate-400 z-10 transition">
             <i data-lucide="piggy-bank" class="w-5 h-5"></i>
-            <span class="text-[10px] font-bold mt-0.5">Скарбничка</span>
+            <span class="text-[10px] font-bold mt-0.5">Скарб</span>
           </button>
 
           <button onclick="switchTab('settings', 3)" class="relative flex-1 h-full flex flex-col items-center justify-center text-slate-400 z-10 transition">
@@ -909,9 +891,7 @@
       lockScreen.classList.add('hidden');
       appShell.style.opacity = '1';
       appShell.style.filter = 'none';
-      setTimeout(() => {
-        switchTab('home', 0);
-      }, 200);
+      setTimeout(() => switchTab('home', 0), 200);
     }
 
     function validatePin() {
@@ -959,9 +939,7 @@
 
     document.getElementById('biometric-btn').addEventListener('click', () => {
       triggerFaceID();
-      setTimeout(() => {
-        unlockApp();
-      }, 1600);
+      setTimeout(unlockApp, 1600);
     });
 
     let deferredPrompt = null;
@@ -969,9 +947,7 @@
       event.preventDefault();
       deferredPrompt = event;
       const installBtn = document.getElementById('install-button');
-      if (installBtn) {
-        installBtn.classList.remove('hidden');
-      }
+      if (installBtn) installBtn.classList.remove('hidden');
     });
 
     function installApp() {
@@ -991,11 +967,8 @@
       const tabs = ['home', 'analytics', 'vault', 'settings'];
       tabs.forEach(t => {
         const el = document.getElementById(`tab-${t}`);
-        if (t === tabName) {
-          el.classList.remove('hidden-tab');
-        } else {
-          el.classList.add('hidden-tab');
-        }
+        if (t === tabName) el.classList.remove('hidden-tab');
+        else el.classList.add('hidden-tab');
       });
 
       const pill = document.getElementById('nav-pill');
@@ -1059,13 +1032,10 @@
     function setCardSkin(skin) {
       const card = document.getElementById('bank-card');
       if (skin === 'emerald') {
-        card.className = 'card-3d-inner relative w-full h-56 rounded-[2rem] p-5 flex flex-col justify-between glass-card overflow-hidden shadow-[0_30px_80px_rgba(15,23,42,0.7)] cursor-pointer';
-        card.style.background = 'linear-gradient(135deg, rgba(16,185,129,0.28), rgba(6,78,59,0.68) 35%, rgba(15,23,42,0.75) 100%)';
+        card.style.background = 'linear-gradient(135deg, rgba(16,185,129,0.3), rgba(6,78,59,0.72) 35%, rgba(15,23,42,0.82) 100%)';
       } else if (skin === 'purple') {
-        card.className = 'card-3d-inner relative w-full h-56 rounded-[2rem] p-5 flex flex-col justify-between glass-card overflow-hidden shadow-[0_30px_80px_rgba(15,23,42,0.7)] cursor-pointer';
-        card.style.background = 'linear-gradient(135deg, rgba(139,92,246,0.35), rgba(67,56,202,0.7) 32%, rgba(15,23,42,0.82) 100%)';
+        card.style.background = 'linear-gradient(135deg, rgba(139,92,246,0.35), rgba(67,56,202,0.72) 32%, rgba(15,23,42,0.82) 100%)';
       } else if (skin === 'gold') {
-        card.className = 'card-3d-inner relative w-full h-56 rounded-[2rem] p-5 flex flex-col justify-between glass-card overflow-hidden shadow-[0_30px_80px_rgba(15,23,42,0.7)] cursor-pointer';
         card.style.background = 'linear-gradient(135deg, rgba(251,191,36,0.42), rgba(146,64,14,0.78) 42%, rgba(15,23,42,0.8) 100%)';
       }
     }
