@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="Auralis" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="format-detection" content="telephone=no" />
-  <title>Auralis — iOS Liquid Glass</title>
+  <title>Auralis — Liquid Glass</title>
   <link rel="icon" type="image/svg+xml" href="./assets/teenbank-app-icon.svg" />
   <link rel="apple-touch-icon" href="./assets/teenbank-app-icon.svg" />
   <link rel="manifest" href="./manifest.webmanifest" />
@@ -21,163 +21,557 @@
 
   <style>
     :root {
-      --bg-deep: #020617;
-      --bg-1: #091525;
-      --bg-2: #0f172a;
+      --bg-deep: #020817;
+      --bg-panel: rgba(6, 15, 28, 0.82);
+      --bg-panel-2: rgba(15, 23, 42, 0.7);
       --glass: rgba(255,255,255,0.08);
-      --glass-2: rgba(255,255,255,0.12);
-      --glass-3: rgba(255,255,255,0.18);
-      --glass-strong: rgba(255,255,255,0.22);
-      --line: rgba(255,255,255,0.14);
+      --glass-strong: rgba(255,255,255,0.14);
+      --line: rgba(148,163,184,0.14);
+      --emerald: #5eead4;
+      --emerald-soft: #98f5d7;
+      --emerald-deep: #0f766e;
+      --teal: #2dd4bf;
+      --indigo: #a78bfa;
+      --violet: #8b5cf6;
+      --amber: #fbbf24;
       --text: #f8fafc;
       --muted: #94a3b8;
-      --emerald: #34d399;
-      --emerald-soft: #6ee7b7;
-      --teal: #2dd4bf;
-      --indigo: #8b5cf6;
-      --violet: #a78bfa;
-      --amber: #fbbf24;
-      --shadow: rgba(2,6,23,0.75);
-      --card-glow: rgba(52,211,153,0.35);
+      --shadow: rgba(2, 6, 23, 0.9);
     }
 
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-    html, body {
-      margin: 0; width: 100%; height: 100%;
-      background: radial-gradient(circle at 12% 10%, rgba(52,211,153,0.18), transparent 20%), radial-gradient(circle at 85% 75%, rgba(139,92,246,0.2), transparent 25%), linear-gradient(180deg, #020617 0%, #030712 100%);
-      color: var(--text); overscroll-behavior: none; user-select: none; overflow: hidden;
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      user-select: none;
     }
-    body { position: relative; min-height: 100dvh; }
-    button, input { font: inherit; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 10% 8%, rgba(52, 211, 153, 0.15), transparent 18%),
+        radial-gradient(circle at 82% 70%, rgba(139, 92, 246, 0.18), transparent 28%),
+        linear-gradient(180deg, #010b16 0%, #020817 100%);
+      color: var(--text);
+      overflow: hidden;
+      overscroll-behavior: none;
+      touch-action: manipulation;
+    }
+
+    body {
+      position: relative;
+      min-height: 100dvh;
+    }
+
+    button, input {
+      font: inherit;
+    }
 
     .app-shell {
-      position: relative; width: 100%; height: 100dvh; display: flex; align-items: center; justify-content: center;
-      overflow: hidden; background: radial-gradient(circle at 30% 10%, rgba(52,211,153,0.18), transparent 16%), radial-gradient(circle at 80% 80%, rgba(168,85,247,0.18), transparent 22%), #020617;
+      position: relative;
+      width: 100%;
+      height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 20% 12%, rgba(52,211,153,0.18), transparent 16%),
+        radial-gradient(circle at 80% 80%, rgba(168,85,247,0.15), transparent 22%),
+        #020617;
       transition: opacity 0.35s ease, filter 0.35s ease;
     }
 
     .iphone-frame {
-      position: relative; width: min(100%, 430px); height: 100dvh; background: rgba(2,6,23,0.72); border: 1px solid rgba(148,163,184,0.12); overflow: hidden;
-      backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), 0 30px 60px rgba(2,6,23,0.7);
+      position: relative;
+      width: min(100%, 430px);
+      height: 100dvh;
+      background: rgba(2, 6, 23, 0.78);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 30px 60px rgba(2,6,23,0.7);
     }
 
     .ambient-glow {
-      position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.48; pointer-events: none; animation: pulseGlow 9s ease-in-out infinite alternate;
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(90px);
+      opacity: 0.48;
+      pointer-events: none;
+      animation: pulseGlow 9s ease-in-out infinite alternate;
     }
+
     @keyframes pulseGlow {
-      0% { transform: scale(1) translate(0,0); opacity: 0.32; }
-      50% { transform: scale(1.18) translate(18px, -14px); opacity: 0.54; }
-      100% { transform: scale(0.95) translate(-12px, 14px); opacity: 0.38; }
+      0% { transform: scale(1) translate(0,0); opacity: 0.28; }
+      50% { transform: scale(1.16) translate(18px, -12px); opacity: 0.48; }
+      100% { transform: scale(0.96) translate(-12px, 12px); opacity: 0.3; }
     }
 
     .liquid-glass {
-      position: relative; background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)); border: 1px solid rgba(255,255,255,0.14);
-      box-shadow: inset 0 1px 1px rgba(255,255,255,0.18), inset 0 -1px 1px rgba(255,255,255,0.04), 0 18px 32px rgba(2,6,23,0.45), 0 2px 15px rgba(15,23,42,0.28);
-      backdrop-filter: blur(28px) saturate(170%); -webkit-backdrop-filter: blur(28px) saturate(170%); overflow: hidden; will-change: transform, box-shadow;
+      position: relative;
+      background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.16), inset 0 -1px 1px rgba(255,255,255,0.04), 0 20px 32px rgba(2,6,23,0.38), 0 2px 12px rgba(15,23,42,0.18);
+      backdrop-filter: blur(18px) saturate(150%);
+      -webkit-backdrop-filter: blur(18px) saturate(150%);
+      overflow: hidden;
+      will-change: transform, box-shadow;
     }
+
     .liquid-glass::before {
-      content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.18) 34%, transparent 60%);
-      transform: translateX(-120%) rotate(16deg); animation: glassSweep 11s ease-in-out infinite; pointer-events: none;
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,0.18) 32%, transparent 60%);
+      transform: translateX(-120%) rotate(16deg);
+      animation: glassSweep 11s ease-in-out infinite;
+      pointer-events: none;
     }
-    @keyframes glassSweep { 0% { transform: translateX(-130%) rotate(16deg); } 18%, 100% { transform: translateX(120%) rotate(16deg); } }
+
+    @keyframes glassSweep {
+      0% { transform: translateX(-130%) rotate(16deg); }
+      18%, 100% { transform: translateX(120%) rotate(16deg); }
+    }
 
     .glass-card {
-      position: relative; background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(255,255,255,0.04)); border: 1px solid rgba(255,255,255,0.18);
-      box-shadow: 0 30px 70px rgba(15,23,42,0.58), inset 0 1px 1px rgba(255,255,255,0.32); backdrop-filter: blur(36px) saturate(220%); -webkit-backdrop-filter: blur(36px) saturate(220%);
+      position: relative;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+      box-shadow: 0 30px 70px rgba(15,23,42,0.52), inset 0 1px 1px rgba(255,255,255,0.2);
+      backdrop-filter: blur(38px) saturate(220%);
+      -webkit-backdrop-filter: blur(38px) saturate(220%);
     }
 
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    .tab-content { transition: opacity 0.34s ease, transform 0.34s cubic-bezier(.16,1,.3,1); }
-    .tab-content.hidden-tab { opacity: 0; transform: translateY(10px) scale(0.98); pointer-events: none; position: absolute; inset: 0; width: 100%; }
-    .nav-pill { transition: all 0.45s cubic-bezier(.34,1.56,.64,1); }
+    .tab-content {
+      transition: opacity 0.28s ease, transform 0.28s cubic-bezier(.16,1,.3,1);
+      will-change: opacity, transform;
+    }
+
+    .tab-content.hidden-tab {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: translateY(12px) scale(0.985);
+      pointer-events: none;
+    }
+
+    .nav-pill {
+      transition: all 0.45s cubic-bezier(.34,1.56,.64,1);
+    }
+
     .card-3d-wrapper { perspective: 1200px; }
     .card-3d-inner {
-      transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(.23,1,.32,1), box-shadow 0.35s ease; will-change: transform;
+      transform-style: preserve-3d;
+      transition: transform 0.7s cubic-bezier(.23,1,.32,1), box-shadow 0.35s ease;
+      will-change: transform;
     }
-    .card-3d-inner:hover { box-shadow: 0 32px 80px rgba(17,24,39,0.68), inset 0 1px 1px rgba(255,255,255,0.34); }
-    .faceid-modal { transition: opacity 0.35s ease, transform 0.35s ease; }
+    .card-3d-inner:hover {
+      box-shadow: 0 32px 80px rgba(17,24,39,0.68), inset 0 1px 1px rgba(255,255,255,0.3);
+    }
+
+    .interactive { transition: transform 0.18s ease; }
     .interactive:hover { transform: translateY(-1px); }
 
     .lock-screen {
-      position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at top, rgba(52,211,153,0.15), transparent 22%), linear-gradient(180deg, rgba(2,6,23,0.94) 0%, rgba(2,6,23,0.96) 100%); transition: opacity 0.45s ease, visibility 0.45s ease;
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at top, rgba(94,234,212,0.16), transparent 24%),
+        linear-gradient(180deg, rgba(2,6,23,0.75), rgba(2,8,20,0.86));
+      transition: opacity 0.35s ease, visibility 0.35s ease;
     }
-    .lock-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    .lock-screen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
     .lock-window {
-      position: relative; width: min(100%, 420px); height: 100dvh; padding: max(12px, env(safe-area-inset-top)) 20px max(30px, env(safe-area-inset-bottom)); display: flex; flex-direction: column; justify-content: space-between;
-      background: rgba(3, 7, 18, 0.25); border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(26px) saturate(120%); -webkit-backdrop-filter: blur(26px) saturate(120%);
+      position: relative;
+      width: min(100%, 430px);
+      height: 100dvh;
+      padding: max(14px, env(safe-area-inset-top)) 20px max(22px, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+      overflow: hidden;
     }
-    .status-bar { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.92); padding-top: 2px; }
-    .status-icons { display: flex; align-items: center; gap: 7px; opacity: 0.9; font-size: 10px; }
-    .lock-main { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; margin-top: -24px; }
+
+    .lock-window::before,
+    .lock-window::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 1px;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    .status-bar {
+      position: absolute;
+      top: 26px;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.96;
+      font-size: 10px;
+    }
+
+    .status-battery {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 18px;
+      padding: 0 6px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.9);
+      color: #0b1220;
+      font-size: 11px;
+      font-weight: 800;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+    }
+
+    .lock-main {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 18px;
+      margin-top: 10px;
+    }
+
     .face-id-ring {
-      width: 124px; height: 124px; position: relative; border-radius: 32px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)); border: 1px solid rgba(110,231,183,0.42);
-      box-shadow: 0 0 30px rgba(52,211,153,0.2), inset 0 0 18px rgba(255,255,255,0.08); animation: pulseRing 2.5s ease-in-out infinite;
+      position: relative;
+      width: 154px;
+      height: 154px;
+      border-radius: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 2px solid rgba(94,234,212,0.75);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 0 35px rgba(94,234,212,0.12), 0 10px 30px rgba(15,23,42,0.35);
+      animation: pulseRing 2.8s ease-in-out infinite;
     }
-    .face-id-ring::before { content: ""; position: absolute; inset: 10px; border-radius: 28px; border: 1px solid rgba(110,231,183,0.25); }
+
+    .face-id-ring::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border-radius: 26px;
+      border: 1px solid rgba(148,255,230,0.24);
+      background: linear-gradient(135deg, rgba(94,234,212,0.04), rgba(255,255,255,0.02));
+    }
+
     @keyframes pulseRing {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(52,211,153,0.14), inset 0 0 14px rgba(255,255,255,0.06); }
-      50% { transform: scale(1.04); box-shadow: 0 0 36px rgba(52,211,153,0.28), inset 0 0 18px rgba(255,255,255,0.08); }
+      0%, 100% { transform: scale(1); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 0 32px rgba(94,234,212,0.10), 0 10px 28px rgba(15,23,42,0.28); }
+      50% { transform: scale(1.025); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 0 42px rgba(94,234,212,0.16), 0 12px 36px rgba(15,23,42,0.32); }
     }
-    .lock-title { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.06em; color: rgba(255,255,255,0.96); margin: 0; }
-    .lock-subtext { font-size: 0.82rem; color: rgba(148,163,184,0.9); letter-spacing: 0.04em; text-transform: uppercase; margin-top: -8px; }
-    .face-btn, .passcode-btn { min-width: 210px; border: 0; border-radius: 18px; padding: 14px 20px; font-weight: 700; letter-spacing: 0.02em; transition: transform 0.2s ease, opacity 0.2s ease; }
-    .face-btn { background: linear-gradient(135deg, rgba(52,211,153,0.25), rgba(45,212,191,0.12)); color: #d1fae5; border: 1px solid rgba(110,231,183,0.4); box-shadow: inset 0 1px 1px rgba(255,255,255,0.16); }
-    .face-btn:active, .passcode-btn:active { transform: scale(0.98); }
-    .passcode-wrap { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-    .passcode-dots { display: flex; gap: 12px; justify-content: center; align-items: center; }
-    .passcode-dot { width: 13px; height: 13px; border-radius: 999px; background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.12); transition: all 0.2s ease; }
-    .passcode-dot.active { background: linear-gradient(135deg, rgba(110,231,183,1), rgba(52,211,153,1)); box-shadow: 0 0 20px rgba(52,211,153,0.4); transform: scale(1.08); }
-    .passcode-pad { width: 100%; max-width: 290px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 8px; }
+
+    .lock-title {
+      margin: 0;
+      font-size: clamp(3rem, 5vw, 4.2rem);
+      letter-spacing: -0.08em;
+      font-weight: 800;
+      line-height: 0.95;
+      color: rgba(255,255,255,0.96);
+    }
+
+    .lock-subtext {
+      margin-top: -4px;
+      font-size: 0.9rem;
+      color: rgba(148,163,184,0.82);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .face-btn {
+      width: min(100%, 340px);
+      border: 0;
+      border-radius: 18px;
+      padding: 18px 20px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, rgba(15,70,66,0.9), rgba(13,59,56,0.7));
+      color: #d4fff3;
+      border: 1px solid rgba(120,230,199,0.45);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 10px 20px rgba(4, 110, 98, 0.16);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+
+    .face-btn:active { transform: scale(0.985); }
+
+    .passcode-wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .passcode-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      min-height: 16px;
+    }
+
+    .passcode-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: all 0.18s ease;
+    }
+
+    .passcode-dot.active {
+      background: linear-gradient(135deg, rgba(148,255,230,1), rgba(94,234,212,1));
+      box-shadow: 0 0 16px rgba(94,234,212,0.46);
+      transform: scale(1.08);
+    }
+
+    .passcode-pad {
+      width: min(100%, 340px);
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px 20px;
+      margin-top: 4px;
+    }
+
     .digit {
-      width: 100%; aspect-ratio: 1; border-radius: 999px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.94); font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; justify-content: center; transition: transform 0.18s ease, background 0.2s ease;
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.045);
+      color: rgba(255,255,255,0.94);
+      font-size: clamp(2.2rem, 7vw, 3rem);
+      font-weight: 400;
+      letter-spacing: -0.05em;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, opacity 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.04);
     }
-    .digit:active { transform: scale(0.96); background: rgba(255,255,255,0.12); }
-    .digit.zero { font-size: 1.4rem; }
-    .digit-icon { font-size: 1.15rem; }
-    .lock-footer { display: flex; justify-content: space-between; align-items: center; gap: 10px; width: 100%; color: rgba(148,163,184,0.8); font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; }
-    .lock-footer span:last-child { opacity: 0.75; }
+
+    .digit:active {
+      transform: scale(0.96);
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.14);
+    }
+
+    .digit:disabled {
+      opacity: 0.78;
+      cursor: not-allowed;
+    }
+
+    .digit.zero { font-size: clamp(2rem, 6vw, 2.6rem); }
+    .digit-icon {
+      font-size: clamp(1.7rem, 4.6vw, 2.3rem);
+      font-weight: 400;
+    }
+
+    .lock-footer {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      color: rgba(148,163,184,0.7);
+      font-size: 0.7rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
 
     .sheet-backdrop {
-      position: fixed; inset: 0; background: rgba(2,6,23,0.5); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; visibility: hidden; transition: all 0.24s ease; z-index: 60;
+      position: fixed;
+      inset: 0;
+      background: rgba(2,6,23,0.52);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.22s ease;
+      z-index: 60;
     }
-    .sheet-backdrop.visible { opacity: 1; visibility: visible; }
+
+    .sheet-backdrop.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
     .action-sheet {
-      position: fixed; left: 50%; bottom: 18px; transform: translate(-50%, 120%); width: min(100% - 20px, 430px); background: rgba(15,23,42,0.84); border: 1px solid rgba(148,163,184,0.15); border-radius: 28px 28px 22px 22px; box-shadow: 0 -18px 50px rgba(2,6,23,0.7); padding: 16px 16px 12px; z-index: 70; transition: transform 0.28s ease;
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translate(-50%, 120%);
+      width: min(100% - 18px, 430px);
+      background: rgba(15,23,42,0.82);
+      border: 1px solid rgba(148,163,184,0.15);
+      border-radius: 28px 28px 22px 22px;
+      box-shadow: 0 -18px 32px rgba(2,6,23,0.42);
+      padding: 12px 14px 16px;
+      z-index: 70;
+      transition: transform 0.25s ease;
     }
-    .action-sheet.open { transform: translate(-50%, 0); }
-    .sheet-handle { width: 48px; height: 5px; background: rgba(255,255,255,0.18); border-radius: 999px; margin: 0 auto 12px; }
-    .action-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+
+    .action-sheet.open {
+      transform: translate(-50%, 0);
+    }
+
+    .sheet-handle {
+      width: 52px;
+      height: 5px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 999px;
+      margin: 0 auto 12px;
+    }
+
+    .sheet-header {
+      margin: 0 0 12px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(226,232,240,0.8);
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
     .action-option {
-      width: 100%; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); color: white; border-radius: 18px; padding: 14px 10px; display: flex; flex-direction: column; align-items: center; gap: 8px; font-weight: 700; transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+      width: 100%;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.035);
+      color: white;
+      border-radius: 18px;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
     }
-    .action-option:active { transform: scale(0.98); }
-    .action-option.active { border-color: rgba(110,231,183,0.7); background: rgba(52,211,153,0.12); }
+
+    .action-option:active {
+      transform: scale(0.98);
+    }
+
+    .action-option.active {
+      border-color: rgba(110,231,183,0.7);
+      background: rgba(52,211,153,0.12);
+    }
 
     .toast {
-      position: fixed; left: 50%; bottom: 110px; transform: translateX(-50%) translateY(16px); background: rgba(15,23,42,0.9); color: white; border: 1px solid rgba(255,255,255,0.1); border-radius: 999px; padding: 10px 16px; font-size: 12px; letter-spacing: 0.04em; opacity: 0; pointer-events: none; transition: all 0.25s ease; z-index: 80;
+      position: fixed;
+      left: 50%;
+      bottom: 120px;
+      transform: translateX(-50%) translateY(16px);
+      background: rgba(15,23,42,0.9);
+      color: #f8fafc;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      opacity: 0;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 120;
+      white-space: nowrap;
     }
-    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    @media (max-width: 420px) { .lock-title { font-size: 1.95rem; } }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .page-shell {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .page-shell.ready {
+      opacity: 1;
+    }
+
+    @media (max-width: 420px) {
+      .lock-title { font-size: 2.8rem; }
+      .face-btn { width: min(100%, 310px); }
+      .passcode-pad { width: min(100%, 310px); }
+    }
   </style>
 </head>
 <body>
   <div id="lock-screen" class="lock-screen">
     <div class="lock-window">
-      <div class="status-bar">
-        <span>9:41</span>
+      <div class="status-bar" aria-hidden="true">
+        <span>20:50</span>
         <div class="status-icons">
           <span>◔</span>
           <span>▣</span>
-          <span>◉</span>
+          <span class="status-battery">55</span>
         </div>
       </div>
 
       <div class="lock-main">
-        <div class="face-id-ring">
-          <i data-lucide="scan-face" class="w-14 h-14 text-emerald-300"></i>
+        <div class="face-id-ring" aria-label="Face ID">
+          <svg viewBox="0 0 96 96" width="72" height="72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M30 38.5C30 27.7 38.7 19 49.5 19C60.3 19 69 27.7 69 38.5V39.5H76V38.5C76 24.4 64.6 13 50.5 13C36.4 13 25 24.4 25 38.5V39.5H30V38.5Z" fill="rgba(148,255,230,0.9)"/>
+            <path d="M34 38C34 30.8 39.8 25 47 25H52C59.2 25 65 30.8 65 38V42.5C65 49.7 59.2 55.5 52 55.5H47C39.8 55.5 34 49.7 34 42.5V38Z" stroke="rgba(148,255,230,0.9)" stroke-width="4" stroke-linecap="round"/>
+            <path d="M34 39C34 25.7 44.7 15 58 15H61C70.4 15 78 22.6 78 32V40.5" stroke="rgba(148,255,230,0.9)" stroke-width="4" stroke-linecap="round"/>
+            <path d="M36.5 54.5C40.5 62 48 66 60 66C69.5 66 77.3 61.8 81 55" stroke="rgba(148,255,230,0.9)" stroke-width="4" stroke-linecap="round"/>
+            <circle cx="48" cy="46" r="2.5" fill="rgba(148,255,230,0.9)"/>
+            <circle cx="62" cy="46" r="2.5" fill="rgba(148,255,230,0.9)"/>
+            <path d="M44 50.5C47.5 53.8 52 54.5 58 53.5" stroke="rgba(148,255,230,0.9)" stroke-width="3.2" stroke-linecap="round"/>
+          </svg>
         </div>
 
         <div>
@@ -185,7 +579,7 @@
           <div class="lock-subtext">Face ID / Unlock</div>
         </div>
 
-        <button id="biometric-btn" class="face-btn">Use Face ID</button>
+        <button id="biometric-btn" class="face-btn" type="button">Use Face ID</button>
 
         <div class="passcode-wrap">
           <div class="passcode-dots" aria-label="PIN dots">
@@ -196,18 +590,18 @@
           </div>
 
           <div class="passcode-pad" aria-label="PIN keypad">
-            <button class="digit" data-value="1">1</button>
-            <button class="digit" data-value="2">2</button>
-            <button class="digit" data-value="3">3</button>
-            <button class="digit" data-value="4">4</button>
-            <button class="digit" data-value="5">5</button>
-            <button class="digit" data-value="6">6</button>
-            <button class="digit" data-value="7">7</button>
-            <button class="digit" data-value="8">8</button>
-            <button class="digit" data-value="9">9</button>
-            <button class="digit digit-icon" data-value="delete" aria-label="delete">⌫</button>
-            <button class="digit zero" data-value="0">0</button>
-            <button class="digit digit-icon" data-value="enter" aria-label="enter">→</button>
+            <button class="digit" data-value="1" type="button">1</button>
+            <button class="digit" data-value="2" type="button">2</button>
+            <button class="digit" data-value="3" type="button">3</button>
+            <button class="digit" data-value="4" type="button">4</button>
+            <button class="digit" data-value="5" type="button">5</button>
+            <button class="digit" data-value="6" type="button">6</button>
+            <button class="digit" data-value="7" type="button">7</button>
+            <button class="digit" data-value="8" type="button">8</button>
+            <button class="digit" data-value="9" type="button">9</button>
+            <button class="digit digit-icon" data-value="delete" type="button" aria-label="delete">⌫</button>
+            <button class="digit zero" data-value="0" type="button">0</button>
+            <button class="digit digit-icon" data-value="enter" type="button" aria-label="enter">→</button>
           </div>
         </div>
       </div>
@@ -219,7 +613,7 @@
     </div>
   </div>
 
-  <div id="app-shell" class="app-shell" aria-live="polite">
+  <div id="app-shell" class="app-shell page-shell" aria-live="polite">
     <div class="iphone-frame">
       <div class="ambient-glow w-96 h-96 bg-emerald-500/30 -top-20 -left-20"></div>
       <div class="ambient-glow w-80 h-80 bg-indigo-500/30 top-1/3 -right-16" style="animation-delay:-2.5s;"></div>
@@ -229,7 +623,7 @@
         <header class="flex items-center justify-between py-3 mb-2 shrink-0">
           <div class="flex items-center space-x-3">
             <div class="relative shrink-0">
-              <img id="user-avatar" src="./assets/teenbank-avatar.svg" alt="Auralis avatar" class="w-11 h-11 rounded-full object-cover border-2 border-emerald-400/80 shadow-lg ring-2 ring-emerald-400/30" />
+              <img id="user-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop offset='0' stop-color='%230b1326'/%3E%3Cstop offset='1' stop-color='%2317c9a1'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='120' height='120' rx='36' fill='url(%23g)'/%3E%3Ccircle cx='60' cy='48' r='20' fill='%23d5fff4'/%3E%3Cpath d='M34 94c7-14 20-23 26-23s19 9 26 23' fill='%23d5fff4'/%3E%3Crect x='18' y='18' width='84' height='84' rx='30' fill='none' stroke='%2399f6e4' stroke-opacity='.45'/%3E%3C/svg%3E" alt="Auralis avatar" class="w-11 h-11 rounded-full object-cover border-2 border-emerald-300/80 shadow-lg ring-2 ring-emerald-400/20" />
               <div class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-400 border-2 border-slate-950 rounded-full"></div>
             </div>
             <div>
@@ -245,10 +639,10 @@
             <button id="install-button" onclick="installApp()" class="hidden w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-emerald-300 active:scale-90 transition">
               <i data-lucide="download" class="w-4 h-4"></i>
             </button>
-            <button onclick="triggerFaceID()" class="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-emerald-300 active:scale-90 transition">
+            <button onclick="triggerFaceID()" class="w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-emerald-300 active:scale-90 transition" type="button" aria-label="Face ID">
               <i data-lucide="scan-face" class="w-5 h-5"></i>
             </button>
-            <button onclick="toggleNotifications()" class="relative w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-slate-200 active:scale-90 transition">
+            <button onclick="toggleNotifications()" class="relative w-10 h-10 rounded-full liquid-glass flex items-center justify-center text-slate-200 active:scale-90 transition" type="button" aria-label="Notifications">
               <i data-lucide="bell" class="w-5 h-5"></i>
               <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-emerald-400 rounded-full ring-2 ring-slate-950 animate-ping"></span>
               <span class="absolute top-2.5 right-2.5 w-2 h-2 bg-emerald-400 rounded-full ring-2 ring-slate-950"></span>
@@ -256,13 +650,13 @@
           </div>
         </header>
 
-        <div class="flex-1 relative overflow-y-auto no-scrollbar pb-28">
+        <div class="flex-1 relative overflow-y-auto no-scrollbar pb-28" style="overscroll-behavior:none;">
           <section id="tab-home" class="tab-content space-y-5">
             <div class="card-3d-wrapper py-1">
               <div id="bank-card" class="card-3d-inner relative w-full h-56 rounded-[2rem] p-5 flex flex-col justify-between glass-card overflow-hidden shadow-[0_30px_80px_rgba(15,23,42,0.7)] cursor-pointer">
                 <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/25 rounded-full blur-3xl"></div>
-                <div class="absolute -left-12 -top-12 w-40 h-40 bg-violet-500/18 rounded-full blur-3xl"></div>
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.2),_transparent_35%),linear-gradient(135deg,_rgba(255,255,255,0.08),_rgba(255,255,255,0)_65%)]"></div>
+                <div class="absolute -left-12 -top-12 w-40 h-40 bg-violet-500/15 rounded-full blur-3xl"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.18),_transparent_35%),linear-gradient(135deg,_rgba(255,255,255,0.08),_rgba(255,255,255,0)_65%)]"></div>
 
                 <div class="flex justify-between items-start z-10">
                   <div>
@@ -279,7 +673,7 @@
                   <div class="w-12 h-9 rounded-xl bg-gradient-to-tr from-amber-300 via-yellow-400 to-amber-200 p-0.5 flex flex-col justify-between shadow-inner">
                     <div class="w-full h-full border border-slate-900/20 rounded-lg opacity-70"></div>
                   </div>
-                  <button onclick="flipCard(event)" class="text-[10px] bg-white/8 hover:bg-white/12 active:scale-95 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 text-white flex items-center gap-1.5">
+                  <button onclick="flipCard(event)" class="text-[10px] bg-white/8 hover:bg-white/12 active:scale-95 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/20 text-white flex items-center gap-1.5" type="button">
                     <i data-lucide="rotate-cw" class="w-3 h-3"></i>
                     <span>CVV / Деталі</span>
                   </button>
@@ -299,25 +693,25 @@
             </div>
 
             <div class="grid grid-cols-4 gap-3">
-              <button onclick="openAction('send')" class="group flex flex-col items-center gap-2">
+              <button onclick="openAction('send')" class="group flex flex-col items-center gap-2" type="button">
                 <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-emerald-300 shadow-lg">
                   <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
                 </div>
                 <span class="text-[11px] text-slate-300 font-medium">Переказ</span>
               </button>
-              <button onclick="openTopUp()" class="group flex flex-col items-center gap-2">
+              <button onclick="openTopUp()" class="group flex flex-col items-center gap-2" type="button">
                 <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-teal-300 shadow-lg">
                   <i data-lucide="plus" class="w-6 h-6"></i>
                 </div>
                 <span class="text-[11px] text-slate-300 font-medium">Поповнити</span>
               </button>
-              <button onclick="openAction('jar')" class="group flex flex-col items-center gap-2">
+              <button onclick="openAction('jar')" class="group flex flex-col items-center gap-2" type="button">
                 <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-indigo-300 shadow-lg">
                   <i data-lucide="piggy-bank" class="w-6 h-6"></i>
                 </div>
                 <span class="text-[11px] text-slate-300 font-medium">Скарб</span>
               </button>
-              <button onclick="openAction('more')" class="group flex flex-col items-center gap-2">
+              <button onclick="openAction('more')" class="group flex flex-col items-center gap-2" type="button">
                 <div class="interactive w-14 h-14 rounded-2xl liquid-glass flex items-center justify-center text-violet-300 shadow-lg">
                   <i data-lucide="grid" class="w-6 h-6"></i>
                 </div>
@@ -338,19 +732,19 @@
                   <span class="text-[10px] text-slate-400">Новий</span>
                 </div>
                 <div onclick="quickTransfer('Макс')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
-                  <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-emerald-400/30" />
+                  <img src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-emerald-400/15" alt="Макс" />
                   <span class="text-[10px] text-slate-200 font-medium">Макс</span>
                 </div>
                 <div onclick="quickTransfer('Софія')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
-                  <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-emerald-400/30" />
+                  <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-emerald-400/15" alt="Софія" />
                   <span class="text-[10px] text-slate-200 font-medium">Софія</span>
                 </div>
                 <div onclick="quickTransfer('Денис')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
-                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-emerald-400/30" />
+                  <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-emerald-400/15" alt="Денис" />
                   <span class="text-[10px] text-slate-200 font-medium">Денис</span>
                 </div>
                 <div onclick="quickTransfer('Аліна')" class="flex flex-col items-center space-y-1.5 shrink-0 cursor-pointer group">
-                  <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-emerald-400/30" />
+                  <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&auto=format&fit=crop&q=80" class="w-12 h-12 rounded-full object-cover group-active:scale-90 transition ring-2 ring-emerald-400/15" alt="Аліна" />
                   <span class="text-[10px] text-slate-200 font-medium">Аліна</span>
                 </div>
               </div>
@@ -474,7 +868,7 @@
                 <h2 class="text-xl font-bold text-white">Скарбнички</h2>
                 <p class="text-xs text-slate-400">Накопичуй на свої мрії з +7% річних</p>
               </div>
-              <button class="w-9 h-9 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center font-bold shadow-lg active:scale-90 transition">
+              <button class="w-9 h-9 rounded-full bg-emerald-400 text-slate-950 flex items-center justify-center font-bold shadow-lg active:scale-90 transition" type="button">
                 <i data-lucide="plus" class="w-5 h-5"></i>
               </button>
             </div>
@@ -497,7 +891,7 @@
 
               <div class="flex justify-between items-center pt-1">
                 <span class="text-[11px] text-slate-400">+₴ 70.00 відсоток цього місяця</span>
-                <button onclick="topUpJar('AirPods Max')" class="text-[11px] font-bold text-emerald-300 hover:text-emerald-200">Поповнити +</button>
+                <button onclick="topUpJar('AirPods Max')" class="text-[11px] font-bold text-emerald-300 hover:text-emerald-200" type="button">Поповнити +</button>
               </div>
             </div>
 
@@ -528,13 +922,13 @@
             <div class="liquid-glass rounded-3xl p-4 space-y-4">
               <h3 class="text-sm font-bold text-slate-200">Дизайн картки</h3>
               <div class="grid grid-cols-3 gap-3">
-                <button onclick="setCardSkin('emerald')" class="h-16 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 border-2 border-emerald-300 shadow-lg active:scale-95">
+                <button onclick="setCardSkin('emerald')" class="h-16 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 border-2 border-emerald-300 shadow-lg active:scale-95" type="button">
                   <span class="text-xs font-bold text-white">Emerald</span>
                 </button>
-                <button onclick="setCardSkin('purple')" class="h-16 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-800 border border-white/20 active:scale-95">
+                <button onclick="setCardSkin('purple')" class="h-16 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-800 border border-white/20 active:scale-95" type="button">
                   <span class="text-xs font-bold text-white">Purple</span>
                 </button>
-                <button onclick="setCardSkin('gold')" class="h-16 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 border border-white/20 active:scale-95">
+                <button onclick="setCardSkin('gold')" class="h-16 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 border border-white/20 active:scale-95" type="button">
                   <span class="text-xs font-bold text-slate-950">Gold</span>
                 </button>
               </div>
@@ -568,32 +962,32 @@
                       <p class="text-[11px] text-slate-400">Встановити на головний екран</p>
                     </div>
                   </div>
-                  <button onclick="installApp()" class="px-3 py-2 text-[11px] font-bold rounded-full bg-white/10 border border-white/15 text-white">Встановити</button>
+                  <button onclick="installApp()" class="px-3 py-2 text-[11px] font-bold rounded-full bg-white/10 border border-white/15 text-white" type="button">Встановити</button>
                 </div>
               </div>
             </div>
           </section>
         </div>
 
-        <nav class="absolute bottom-[env(safe-area-inset-bottom,12px)] left-4 right-4 h-16 rounded-full liquid-glass p-1.5 flex items-center justify-between z-50 shadow-2xl border border-white/15">
+        <nav class="absolute bottom-[env(safe-area-inset-bottom,12px)] left-4 right-4 h-16 rounded-full liquid-glass p-1.5 flex items-center justify-between z-50 shadow-2xl border border-white/15" aria-label="Main navigation">
           <div id="nav-pill" class="nav-pill absolute h-[calc(100%-10px)] w-[calc(25%-4px)] bg-white/12 backdrop-blur-md rounded-full border border-white/15 shadow-inner top-1.5 left-1.5 pointer-events-none"></div>
 
-          <button onclick="switchTab('home', 0)" class="relative flex-1 h-full flex flex-col items-center justify-center text-emerald-300 z-10 transition">
+          <button onclick="switchTab('home', 0)" type="button" class="relative flex-1 h-full flex flex-col items-center justify-center text-emerald-300 z-10 transition">
             <i data-lucide="home" class="w-5 h-5"></i>
             <span class="text-[10px] font-bold mt-0.5">Головна</span>
           </button>
 
-          <button onclick="switchTab('analytics', 1)" class="relative flex-1 h-full flex flex-col items-center justify-center text-slate-400 z-10 transition">
+          <button onclick="switchTab('analytics', 1)" type="button" class="relative flex-1 h-full flex flex-col items-center justify-center text-slate-400 z-10 transition">
             <i data-lucide="pie-chart" class="w-5 h-5"></i>
             <span class="text-[10px] font-bold mt-0.5">Аналітика</span>
           </button>
 
-          <button onclick="switchTab('vault', 2)" class="relative flex-1 h-full flex flex-col items-center justify-center text-slate-400 z-10 transition">
+          <button onclick="switchTab('vault', 2)" type="button" class="relative flex-1 h-full flex flex-col items-center justify-center text-slate-400 z-10 transition">
             <i data-lucide="piggy-bank" class="w-5 h-5"></i>
             <span class="text-[10px] font-bold mt-0.5">Скарб</span>
           </button>
 
-          <button onclick="switchTab('settings', 3)" class="relative flex-1 h-full flex flex-col items-center justify-center text-slate-400 z-10 transition">
+          <button onclick="switchTab('settings', 3)" type="button" class="relative flex-1 h-full flex flex-col items-center justify-center text-slate-400 z-10 transition">
             <i data-lucide="sliders" class="w-5 h-5"></i>
             <span class="text-[10px] font-bold mt-0.5">Стиль</span>
           </button>
@@ -615,7 +1009,7 @@
   <div id="sheet-backdrop" class="sheet-backdrop" onclick="closeActionSheet()"></div>
   <div id="action-sheet" class="action-sheet" role="dialog" aria-modal="true" aria-label="Меню дій">
     <div class="sheet-handle"></div>
-    <div id="sheet-header" class="mb-4 text-sm font-semibold text-slate-200">Оберіть дію</div>
+    <div id="sheet-header" class="sheet-header">Оберіть дію</div>
     <div id="sheet-content" class="space-y-3"></div>
   </div>
   <div id="toast" class="toast">Готово</div>
@@ -632,8 +1026,12 @@
     const actionSheet = document.getElementById('action-sheet');
     const sheetContent = document.getElementById('sheet-content');
     const toast = document.getElementById('toast');
+    const faceModal = document.getElementById('faceid-modal');
+
     let enteredPin = '';
     let balance = 14850.5;
+    let biometricLock = false;
+    let actionSheetOpen = false;
 
     function formatBalance(value) {
       return new Intl.NumberFormat('uk-UA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value).replace(',', '.');
@@ -666,11 +1064,15 @@
       dots.forEach((dot, index) => dot.classList.toggle('active', index < current));
     }
 
-    function unlockApp() {
+    function showApp() {
+      appShell.classList.add('ready');
       lockScreen.classList.add('hidden');
-      appShell.style.opacity = '1';
-      appShell.style.filter = 'none';
-      setTimeout(() => switchTab('home', 0), 200);
+      setTimeout(() => switchTab('home', 0), 140);
+    }
+
+    function unlockApp() {
+      showApp();
+      biometricLock = false;
     }
 
     function validatePin() {
@@ -682,8 +1084,8 @@
         setTimeout(() => {
           clearPin();
           digits.forEach(d => d.disabled = false);
-          alert('Невірний код. Спробуйте ще раз.');
-        }, 300);
+          showToast('Невірний код');
+        }, 260);
       }
     }
 
@@ -693,18 +1095,34 @@
         renderPin(enteredPin);
         return;
       }
+
       if (value === 'enter') {
         if (enteredPin.length < 4) {
-          alert('Введіть 4-значний код для розблокування.');
+          showToast('Введіть 4-значний код');
           return;
         }
         validatePin();
         return;
       }
+
       if (enteredPin.length >= 4) return;
       enteredPin += value;
       renderPin(enteredPin);
       if (enteredPin.length === 4) setTimeout(validatePin, 180);
+    }
+
+    function triggerFaceID() {
+      if (biometricLock) return;
+      biometricLock = true;
+      faceModal.classList.remove('opacity-0', 'pointer-events-none');
+      faceModal.classList.add('opacity-100');
+      showToast('Face ID активовано');
+
+      setTimeout(() => {
+        faceModal.classList.add('opacity-0', 'pointer-events-none');
+        faceModal.classList.remove('opacity-100');
+        unlockApp();
+      }, 1200);
     }
 
     document.querySelectorAll('.digit').forEach(button => {
@@ -713,7 +1131,6 @@
 
     document.getElementById('biometric-btn').addEventListener('click', () => {
       triggerFaceID();
-      setTimeout(unlockApp, 1600);
     });
 
     let deferredPrompt = null;
@@ -726,7 +1143,7 @@
 
     function installApp() {
       if (!deferredPrompt) {
-        alert('Додаток вже встановлений або браузер не підтримує PWA-інсталяцію.');
+        showToast('PWA вже встановлено');
         return;
       }
       deferredPrompt.prompt();
@@ -765,16 +1182,6 @@
       const card = document.getElementById('bank-card');
       isFlipped = !isFlipped;
       card.style.transform = isFlipped ? 'rotateY(180deg) rotateX(10deg)' : 'rotateY(0deg) rotateX(0deg)';
-    }
-
-    function triggerFaceID() {
-      const modal = document.getElementById('faceid-modal');
-      modal.classList.remove('opacity-0', 'pointer-events-none');
-      modal.classList.add('opacity-100');
-      setTimeout(() => {
-        modal.classList.add('opacity-0', 'pointer-events-none');
-        modal.classList.remove('opacity-100');
-      }, 1200);
     }
 
     function toggleNotifications() {
@@ -845,16 +1252,16 @@
       document.getElementById('sheet-header').textContent = 'Поповнити баланс';
       sheetContent.innerHTML = `
         <div class="grid grid-cols-2 gap-2 mb-3">
-          <button class="action-option" data-amount="100"><span>+₴ 100</span></button>
-          <button class="action-option" data-amount="250"><span>+₴ 250</span></button>
-          <button class="action-option" data-amount="500"><span>+₴ 500</span></button>
-          <button class="action-option" data-amount="1000"><span>+₴ 1000</span></button>
+          <button class="action-option" data-amount="100" type="button"><span>+₴ 100</span></button>
+          <button class="action-option" data-amount="250" type="button"><span>+₴ 250</span></button>
+          <button class="action-option" data-amount="500" type="button"><span>+₴ 500</span></button>
+          <button class="action-option" data-amount="1000" type="button"><span>+₴ 1000</span></button>
         </div>
         <div class="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
           <span class="text-slate-400 text-sm">₴</span>
           <input id="custom-topup" type="number" min="50" step="50" value="300" class="w-full bg-transparent text-white outline-none placeholder:text-slate-500" placeholder="Інша сума" />
         </div>
-        <button id="confirm-topup" class="mt-3 w-full rounded-2xl bg-emerald-500 text-slate-950 font-bold py-3 active:scale-[0.98]">Поповнити</button>
+        <button id="confirm-topup" type="button" class="mt-3 w-full rounded-2xl bg-emerald-500 text-slate-950 font-bold py-3 active:scale-[0.98]">Поповнити</button>
       `;
 
       sheetContent.querySelectorAll('[data-amount]').forEach(button => {
@@ -904,11 +1311,13 @@
     }
 
     function openActionSheet() {
+      actionSheetOpen = true;
       sheetBackdrop.classList.add('visible');
       actionSheet.classList.add('open');
     }
 
     function closeActionSheet() {
+      actionSheetOpen = false;
       sheetBackdrop.classList.remove('visible');
       actionSheet.classList.remove('open');
     }
@@ -917,6 +1326,8 @@
     window.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') closeActionSheet();
     });
+
+    document.getElementById('sheet-backdrop').addEventListener('click', closeActionSheet);
   </script>
 </body>
 </html>
