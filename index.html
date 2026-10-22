@@ -209,18 +209,6 @@
       overflow: hidden;
     }
 
-    .lock-window::before,
-    .lock-window::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      height: 1px;
-      background: transparent;
-      pointer-events: none;
-    }
-
     .status-bar {
       position: absolute;
       top: 26px;
@@ -270,32 +258,66 @@
       margin-top: 10px;
     }
 
-    .face-id-ring {
+    .face-id-shell {
       position: relative;
-      width: 154px;
-      height: 154px;
-      border-radius: 34px;
+      width: 242px;
+      height: 174px;
+      border-radius: 30px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-      border: 2px solid rgba(94,234,212,0.75);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 0 35px rgba(94,234,212,0.12), 0 10px 30px rgba(15,23,42,0.35);
+      background: linear-gradient(180deg, rgba(3,15,27,0.36), rgba(0,0,0,0.08));
+      border: 1px solid rgba(110,231,183,0.65);
+      box-shadow:
+        0 0 0 1px rgba(110,231,183,0.14),
+        0 0 40px rgba(94,234,212,0.12),
+        inset 0 0 18px rgba(255,255,255,0.04),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    .face-id-shell::before,
+    .face-id-shell::after {
+      content: "";
+      position: absolute;
+      border-radius: 30px;
+      inset: 10px;
+      border: 1px solid rgba(110,231,183,0.25);
+      pointer-events: none;
+    }
+
+    .face-id-shell::after {
+      inset: 18px;
+      border-color: rgba(110,231,183,0.18);
+    }
+
+    .face-id-ring {
+      position: relative;
+      width: 124px;
+      height: 124px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 2px solid rgba(94,234,212,0.82);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 0 26px rgba(94,234,212,0.12);
       animation: pulseRing 2.8s ease-in-out infinite;
+      z-index: 1;
     }
 
     .face-id-ring::before {
       content: "";
       position: absolute;
-      inset: 12px;
-      border-radius: 26px;
-      border: 1px solid rgba(148,255,230,0.24);
+      inset: 10px;
+      border-radius: 24px;
+      border: 1px solid rgba(148,255,230,0.26);
       background: linear-gradient(135deg, rgba(94,234,212,0.04), rgba(255,255,255,0.02));
     }
 
     @keyframes pulseRing {
-      0%, 100% { transform: scale(1); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 0 32px rgba(94,234,212,0.10), 0 10px 28px rgba(15,23,42,0.28); }
-      50% { transform: scale(1.025); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 0 42px rgba(94,234,212,0.16), 0 12px 36px rgba(15,23,42,0.32); }
+      0%, 100% { transform: scale(1); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 0 26px rgba(94,234,212,0.08); }
+      50% { transform: scale(1.02); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 0 34px rgba(94,234,212,0.16); }
     }
 
     .lock-title {
@@ -562,16 +584,18 @@
       </div>
 
       <div class="lock-main">
-        <div class="face-id-ring" aria-label="Face ID">
-          <svg viewBox="0 0 96 96" width="72" height="72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M30 38.5C30 27.7 38.7 19 49.5 19C60.3 19 69 27.7 69 38.5V39.5H76V38.5C76 24.4 64.6 13 50.5 13C36.4 13 25 24.4 25 38.5V39.5H30V38.5Z" fill="rgba(148,255,230,0.9)"/>
-            <path d="M34 38C34 30.8 39.8 25 47 25H52C59.2 25 65 30.8 65 38V42.5C65 49.7 59.2 55.5 52 55.5H47C39.8 55.5 34 49.7 34 42.5V38Z" stroke="rgba(148,255,230,0.9)" stroke-width="4" stroke-linecap="round"/>
-            <path d="M34 39C34 25.7 44.7 15 58 15H61C70.4 15 78 22.6 78 32V40.5" stroke="rgba(148,255,230,0.9)" stroke-width="4" stroke-linecap="round"/>
-            <path d="M36.5 54.5C40.5 62 48 66 60 66C69.5 66 77.3 61.8 81 55" stroke="rgba(148,255,230,0.9)" stroke-width="4" stroke-linecap="round"/>
-            <circle cx="48" cy="46" r="2.5" fill="rgba(148,255,230,0.9)"/>
-            <circle cx="62" cy="46" r="2.5" fill="rgba(148,255,230,0.9)"/>
-            <path d="M44 50.5C47.5 53.8 52 54.5 58 53.5" stroke="rgba(148,255,230,0.9)" stroke-width="3.2" stroke-linecap="round"/>
-          </svg>
+        <div class="face-id-shell" aria-label="Face ID">
+          <div class="face-id-ring">
+            <svg viewBox="0 0 96 96" width="72" height="72" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M30 38.5C30 27.7 38.7 19 49.5 19C60.3 19 69 27.7 69 38.5V39.5H76V38.5C76 24.4 64.6 13 50.5 13C36.4 13 25 24.4 25 38.5V39.5H30V38.5Z" fill="rgba(148,255,230,0.9)"/>
+              <path d="M34 38C34 30.8 39.8 25 47 25H52C59.2 25 65 30.8 65 38V42.5C65 49.7 59.2 55.5 52 55.5H47C39.8 55.5 34 49.7 34 42.5V38Z" stroke="rgba(148,255,230,0.9)" stroke-width="4" stroke-linecap="round"/>
+              <path d="M34 39C34 25.7 44.7 15 58 15H61C70.4 15 78 22.6 78 32V40.5" stroke="rgba(148,255,230,0.9)" stroke-width="4" stroke-linecap="round"/>
+              <path d="M36.5 54.5C40.5 62 48 66 60 66C69.5 66 77.3 61.8 81 55" stroke="rgba(148,255,230,0.9)" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="48" cy="46" r="2.5" fill="rgba(148,255,230,0.9)"/>
+              <circle cx="62" cy="46" r="2.5" fill="rgba(148,255,230,0.9)"/>
+              <path d="M44 50.5C47.5 53.8 52 54.5 58 53.5" stroke="rgba(148,255,230,0.9)" stroke-width="3.2" stroke-linecap="round"/>
+            </svg>
+          </div>
         </div>
 
         <div>
