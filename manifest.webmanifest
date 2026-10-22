@@ -1,8 +1,8 @@
 {
-  "name": "TeenBank",
-  "short_name": "TeenBank",
-  "description": "TeenBank iOS-style liquid glass banking app",
-  "start_url": "./TeenBank_Ultra-Realistic_iOS_Web_App.html",
+  "name": "Auralis",
+  "short_name": "Auralis",
+  "description": "Auralis iOS-style liquid glass banking app",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#020817",
   "theme_color": "#020817",
