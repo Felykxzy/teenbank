@@ -1,22 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
-  <title id="title">TeenBank app icon</title>
-  <desc id="desc">Gradient app icon for TeenBank with card and sparkle.</desc>
+  <title id="title">Auralis app icon</title>
+  <desc id="desc">Premium liquid glass app icon for Auralis</desc>
   <defs>
-    <linearGradient id="bg" x1="0%" x2="100%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="#4ade80"/>
-      <stop offset="35%" stop-color="#2dd4bf"/>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6ee7b7"/>
+      <stop offset="34%" stop-color="#34d399"/>
       <stop offset="100%" stop-color="#4338ca"/>
     </linearGradient>
     <linearGradient id="glass" x1="0%" x2="100%" y1="0%" y2="100%">
-      <stop offset="0%" stop-color="rgba(255,255,255,0.65)"/>
+      <stop offset="0%" stop-color="rgba(255,255,255,0.72)"/>
       <stop offset="100%" stop-color="rgba(255,255,255,0.18)"/>
     </linearGradient>
   </defs>
+
   <rect width="256" height="256" rx="64" fill="url(#bg)"/>
-  <rect x="34" y="60" width="188" height="120" rx="26" fill="rgba(15,23,42,0.3)" stroke="rgba(255,255,255,0.34)"/>
-  <rect x="52" y="86" width="58" height="38" rx="10" fill="rgba(255,255,255,0.18)"/>
-  <path d="M136 88h58c12.7 0 22 9.3 22 22v8H136v-30zm-34 48h120v12c0 12-9 22-22 22H120c-12 0-22-10-22-22v-12z" fill="rgba(255,255,255,0.88)" opacity="0.9"/>
-  <circle cx="198" cy="74" r="18" fill="rgba(255,255,255,0.25)"/>
-  <path d="M198 58v32M182 74h32" stroke="#d1fae5" stroke-width="6" stroke-linecap="round"/>
-  <path d="M108 170c8.8 10.2 20.7 15.7 37.2 15.7 17.2 0 30.1-7.1 39.2-21.8" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="10" stroke-linecap="round"/>
+  <rect x="32" y="54" width="192" height="130" rx="28" fill="rgba(15,23,42,0.26)" stroke="rgba(255,255,255,0.34)"/>
+  <path d="M86 92h84c12 0 22 10 22 22v38H64v-38c0-12 10-22 22-22z" fill="rgba(255,255,255,0.18)"/>
+  <path d="M94 108h68v10H94zm-14 24h96v11c0 10-8 18-18 18H98c-10 0-18-8-18-18v-11z" fill="rgba(255,255,255,0.9)" opacity="0.95"/>
+  <circle cx="192" cy="74" r="17" fill="rgba(255,255,255,0.28)"/>
+  <path d="M192 56v36M176 74h32" stroke="#d1fae5" stroke-width="6" stroke-linecap="round"/>
+  <path d="M82 170c11 15 26 22 46 22 21 0 36-8 47-24" fill="none" stroke="rgba(255,255,255,0.78)" stroke-width="10" stroke-linecap="round"/>
 </svg>
